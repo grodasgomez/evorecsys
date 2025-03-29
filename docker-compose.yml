@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: evorecsys-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: evo_rec_sys_v2
+      MYSQL_USER: misterious_guy
+      MYSQL_PASSWORD: hiddenLetters
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./evo_rec_sys_data.sql:/docker-entrypoint-initdb.d/evo_rec_sys_data.sql
+      - ./init-scripts:/docker-entrypoint-initdb.d/init-scripts
+      - mysql_data:/var/lib/mysql
+    networks:
+      - evorecsys-network
+    command: --default-authentication-plugin=mysql_native_password
+
+  app:
+    build: .
+    container_name: evorecsys-app
+    ports:
+      - "${APP_PORT}:8081"
+    depends_on:
+      - mysql
+    networks:
+      - evorecsys-network
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=misterious_guy
+      - MYSQL_PASSWORD=hiddenLetters
+      - MYSQL_DATABASE=evo_rec_sys_v2
+
+volumes:
+  mysql_data:
+
+networks:
+  evorecsys-network:
+    driver: bridge 

@@ -3,10 +3,10 @@
 class Connection:
 
     # These values should be changed according to your network configurations.
-    HOST = '192.168.X.X'  
-    USER = 'misterious_guy'
-    PASSWORD = 'hiddenLetters'
-    DATA_BASE = 'evo_rec_sys'
+    HOST = 'localhost'  
+    USER = 'root'
+    PASSWORD = 'rootpassword'
+    DATA_BASE = 'evo_rec_sys_v2'
 
     # Constructor
     def __init__(self):

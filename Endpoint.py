@@ -880,4 +880,6 @@ if __name__ == '__main__':
     col_evo_rec_sys = make_app()
     col_evo_rec_sys.listen(8081)
     tornado.ioloop.IOLoop.instance().start()
+    print("EvoRecSys is running on port 8081")
+
 
