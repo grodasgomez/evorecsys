@@ -10,8 +10,12 @@ class Meal:
     # Constructor
     def __init__(self, main_food_data, side_food_data_list):
 
-        self.main_food_item = None
-        self.side_food_items_list = []
+        self.main_food_item = Food(main_food_data[0], main_food_data[1], main_food_data[2], main_food_data[3],
+                                   main_food_data[4], main_food_data[5], main_food_data[6], main_food_data[7],
+                                   main_food_data[8], main_food_data[9], main_food_data[10], main_food_data[11],
+                                   main_food_data[12], main_food_data[13], main_food_data[14], main_food_data[15],
+                                   main_food_data[16])
+        self.side_food_items_list: list[Food] = []
         self.serving_size = 0.0
         self.number_of_calories = 0.0
         self.proteins = 0.0
@@ -27,11 +31,6 @@ class Meal:
     # This method builds a meal using food items provided as a parameters.
     def __create_meal(self, main_food_data, side_food_data_list):
 
-        self.main_food_item = Food(main_food_data[0], main_food_data[1], main_food_data[2], main_food_data[3],
-                                   main_food_data[4], main_food_data[5], main_food_data[6], main_food_data[7],
-                                   main_food_data[8], main_food_data[9], main_food_data[10], main_food_data[11],
-                                   main_food_data[12], main_food_data[13], main_food_data[14], main_food_data[15],
-                                   main_food_data[16])
         self.serving_size += self.main_food_item.serving_size
         self.number_of_calories += self.main_food_item.number_of_calories
         self.proteins += self.main_food_item.protein
@@ -84,7 +83,6 @@ class Meal:
         tailored_fat = (reference_calories * main_item.fat) / main_item.number_of_calories
         tailored_saturated_fat = (reference_calories * main_item.saturated_fat) / main_item.number_of_calories
         tailored_sodium = (reference_calories * main_item.sodium) / main_item.number_of_calories
-        self.main_food_item = None
         self.main_food_item = Food(main_item.name, main_item.category, main_item.is_main, main_item.is_breakfast,
                                    main_item.is_lunch, main_item.is_dinner, main_item.is_vegetarian, main_item.is_vegan,
                                    tailored_serving_size, reference_calories, tailored_protein, tailored_carbohydrate,
@@ -149,3 +147,11 @@ class Meal:
         round(self.fats, 2)
         round(self.saturated_fats, 2)
         round(self.sodium, 2)
+
+    def print_meal(self):
+
+        print("Main food item:")
+        self.main_food_item.print_food()
+        print("Side food items:")
+        for side_food_item in self.side_food_items_list:
+            side_food_item.print_food()

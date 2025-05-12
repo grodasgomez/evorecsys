@@ -123,6 +123,38 @@ class UserPreferencesRestriction:
             score = (attractiveness_difference * self.INTERPOLATION_REFERENCE_VALUE) / len(food_type_set)
 
             return score
+        
+
+    def __evaluate_food_attractiveness_2(self, meal):
+
+        food_type_list = []
+        main = meal.main_food_item.category
+        food_type_list.append(main)
+
+        for side_item in meal.side_food_items_list:
+            food_type_list.append(side_item.category)
+
+        food_type_set = set(food_type_list)
+        first_high_evaluated = set(self.high_evaluated_food_types.get('first'))
+        first_food_intersection = food_type_set.intersection(first_high_evaluated)
+
+        # If all food types are in first high evaluated set, return 0.0 (most preferred)
+        if len(food_type_set) == len(first_food_intersection):
+            return 0.0
+        
+        # If all food types are in second high evaluated set, return 0.5 (medium preferred)
+        second_high_evaluated = set(self.high_evaluated_food_types.get('second'))
+        second_food_intersection = food_type_set.intersection(second_high_evaluated)
+        
+        if len(second_food_intersection) == len(food_type_set):
+            return 0.5
+        
+        # For remaining cases, calculate score based on proportion of non-preferred food types
+        total_preferred = len(first_food_intersection) + len(second_food_intersection)
+        non_preferred = len(food_type_set) - total_preferred
+        # If there are any non-preferred food types, start at 0.5 and add up to 0.5 more based on proportion
+        score = 0.5 + (0.5 * (non_preferred / len(food_type_set)))
+        return min(score, 1.0)  # Ensure score doesn't exceed 1.0
 
     # This method evaluates how attractive are the suggested physical activities to the user.
     def __evaluate_exercising_attractiveness(self, pa_type):

@@ -27,3 +27,22 @@ class Food(Item):
         self.fat = fat
         self.saturated_fat = sat_fat
         self.sodium = sod
+
+    def print_food(self):
+        print(f"Name: {self.name}")
+        print(f"Category: {self.category}")
+        print(f"Is main: {self.is_main}")
+        print(f"Is breakfast: {self.is_breakfast}")
+        print(f"Is lunch: {self.is_lunch}")
+        print(f"Is dinner: {self.is_dinner}")
+        print(f"Is vegetarian: {self.is_vegetarian}")
+        print(f"Is vegan: {self.is_vegan}")
+        print(f"Serving size: {self.serving_size}")
+        print(f"Number of calories: {self.number_of_calories}")
+        print(f"Protein: {self.protein}")
+        print(f"Carbohydrate: {self.carbohydrate}")
+        print(f"Sugar: {self.sugar}")
+        print(f"Fiber: {self.fiber}")
+        print(f"Fat: {self.fat}")
+        print(f"Saturated fat: {self.saturated_fat}")
+        print(f"Sodium: {self.sodium}")

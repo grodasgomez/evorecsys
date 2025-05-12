@@ -69,6 +69,7 @@ class Population:
 
         self.best_individual.set_phenotype(self.initial_population[best_individual_index].phenotype)
         self.best_individual.set_aptitude(self.initial_population[best_individual_index].aptitude)
+        self.best_individual.set_aptitudes(self.initial_population[best_individual_index].aptitudes)
         self.best_individual.set_index(best_individual_index)
 
     # This method executes the selection method: tournament whose size is 2.
@@ -173,10 +174,10 @@ class Population:
 
             if mutation_probability < self.MUTATION_PROBABILITY:
                 mutated_individual_phenotype = self.intermediate_population[index].phenotype
-                self.__execute_random_swap_of_items(mutated_individual_phenotype)
+                self.execute_random_swap_of_items(mutated_individual_phenotype)
 
     # This method is called by the mutation operator.
-    def __execute_random_swap_of_items(self, mutated_phenotype, is_cf_individual=False):
+    def execute_random_swap_of_items(self, mutated_phenotype, is_cf_individual=False):
 
         if is_cf_individual:
 

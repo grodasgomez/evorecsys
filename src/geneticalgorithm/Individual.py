@@ -1,4 +1,5 @@
 # All necessary libraries and imports from other files.
+import numpy as np
 from src.ontology.bundle.Bundle import Bundle
 from src.ontology.bundle.Meal import Meal
 from src.ontology.item.PA import PA
@@ -26,9 +27,10 @@ class Individual:
 
         self.food_items = food
         self.pa_items = pas
-        self.phenotype = []
+        self.phenotype: list[Bundle] = []
         self.aptitude = ap
         self.index = -1
+        self.aptitudes = []
 
     # This method creates the list of bundles.
     def create_phenotype(self, vegetable_indexes, physical_data):
@@ -53,6 +55,10 @@ class Individual:
         self.aptitude = 0.0
         self.aptitude = aptitude
 
+    def set_aptitudes(self, aptitudes):
+
+        self.aptitudes = aptitudes
+
     # This  method sets the index of the individual
     def set_index(self, index):
 
@@ -61,10 +67,16 @@ class Individual:
     # This method evaluates the phenotype using the restrictions.
     def evaluate_phenotype(self, restrictions):
 
+        self.aptitudes = np.zeros(len(restrictions))
+
         healthiness_aptitude = restrictions[self.FOOD_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.FOOD_RESTRICTION_INDEX] = healthiness_aptitude
         consistency_diversity_restriction = restrictions[self.SEMANTIC_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.SEMANTIC_RESTRICTION_INDEX] = consistency_diversity_restriction
         exercising_aptitude = restrictions[self.EXERCISING_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.EXERCISING_RESTRICTION_INDEX] = exercising_aptitude
         user_preferences_aptitude = restrictions[self.USER_PREFERENCES_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX] = user_preferences_aptitude
         self.aptitude = (healthiness_aptitude + consistency_diversity_restriction + exercising_aptitude +
                          user_preferences_aptitude) / len(restrictions)
 

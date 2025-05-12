@@ -1,4 +1,5 @@
 # All necessary libraries and imports from other files.
+from src.geneticalgorithm.Individual import Individual
 from src.geneticalgorithm.restriction.ConsistencyAndDiversityRestriction import ConsistencyAndDiversityRestriction
 from src.geneticalgorithm.restriction.UserPreferencesRestriction import UserPreferencesRestriction
 from src.geneticalgorithm.restriction.HealthyFoodRestriction import HealthyFoodRestriction
@@ -7,9 +8,11 @@ from src.ontology.user.PAPreferenceData import PAPreferenceData
 from src.ontology.user.FoodPreferenceData import FoodPreferenceData
 from src.ontology.user.PhysicalData import PhysicalData
 from src.geneticalgorithm.Population import Population
+from src.geneticalgorithm.MOEAD import MOEAD
 from src.database.ItemsConnection import ItemsConnection
 import random
 import copy
+import time
 
 
 # This class represents a Genetic Algorithm. It uses the information of the current user and the most similar user data
@@ -30,6 +33,7 @@ class GeneticAlgorithm:
         self.pa_items = []
         self.restrictions = []
         self.mutation_dictionary = {}
+        self.moead = None
 
         self.__configure_data(user_data, most_similar_user_data)
 
@@ -37,28 +41,85 @@ class GeneticAlgorithm:
     def execute_genetic_algorithm(self):
 
         print('I have started the evolutionary process...')
+        start_time = time.time()
+        
+        # Initialize MOEA/D
+        self.moead = MOEAD(self.number_of_individuals, len(self.restrictions))
+        self.moead.initialize_weight_vectors()
+        self.moead.initialize_neighborhoods()
+        
+        # Create initial population
         population = Population(self.physical_data, self.food_preferences, self.pa_preferences, self.food_items,
                                 self.pa_items, self.number_of_individuals, self.restrictions,
                                 self.mutation_dictionary)
         population.create_population()
         population.evaluate_population()
-        population.obtain_best_individual()
-
+        self.moead.update_reference_point(population)
+        
         generation_index = 0
-
         while generation_index <= self.number_of_generations:
-
-            population.execute_tournament()
-            population.execute_genetic_operators()
-            population.clone_population()
-            population.evaluate_population()
-            population.obtain_best_individual()
+            # For each subproblem
+            for i in range(self.number_of_individuals):
+                # Select parents from neighborhood
+                neighborhood = self.moead.neighborhoods[i]
+                parents = random.sample(neighborhood, 2)
+                parent1 = population.initial_population[parents[0]]
+                parent2 = population.initial_population[parents[1]]
+                
+                # Create offspring
+                offspring = self.__create_offspring(parent1, parent2, population)
+                
+                # Update reference point
+                self.moead.update_reference_point(population)
+                
+                # Update solutions in neighborhood
+                for j in neighborhood:
+                    current_solution = population.initial_population[j]
+                    current_scalar = self.moead.tchebycheff_scalarization(current_solution, self.moead.weight_vectors[j])
+                    offspring_scalar = self.moead.tchebycheff_scalarization(offspring, self.moead.weight_vectors[j])
+                    
+                    if offspring_scalar < current_scalar:
+                        population.initial_population[j] = offspring
+            
             generation_index += 1
 
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f'Algorithm execution time: {execution_time:.2f} seconds')
         print('I have finished; the recommendations are:')
-        self.__print_phenotype(population.best_individual.phenotype)
+        # Find the best individual based on the final population
+        best_individual = min(population.initial_population, key=lambda x: sum(x.aptitudes))
+        print(f"Best individual aptitudes: {best_individual.aptitudes}")
+        print(f"Best individual aptitude: {best_individual.aptitude}")
+        self.__print_phenotype(best_individual.phenotype)
 
-        return population.best_individual.phenotype
+        return best_individual.phenotype
+
+    def __create_offspring(self, parent1, parent2, population):
+        # Create a new individual
+        offspring = Individual()
+        
+        # Perform crossover
+        if random.random() < Population.CROSSOVER_PROBABILITY:
+            # Create new phenotype by combining parents
+            new_phenotype = []
+            for i in range(len(parent1.phenotype)):
+                if random.random() < 0.5:
+                    new_phenotype.append(copy.deepcopy(parent1.phenotype[i]))
+                else:
+                    new_phenotype.append(copy.deepcopy(parent2.phenotype[i]))
+            offspring.set_phenotype(new_phenotype)
+        else:
+            offspring.set_phenotype(copy.deepcopy(parent1.phenotype))
+            
+        # Perform mutation
+        if random.random() < Population.MUTATION_PROBABILITY:
+            population.execute_random_swap_of_items(offspring.phenotype)
+            
+        # Evaluate offspring
+        offspring.evaluate_phenotype(self.restrictions)
+        
+        return offspring
 
     # This method utilises the information given to configure all the elements needed during the evolutionary execution.
     def __configure_data(self, user_data, most_similar_user_data):
@@ -310,4 +371,11 @@ class GeneticAlgorithm:
             ex1.name, ex1.category, ex1.indoors, ex1.outdoors, ex1.intensity, ex1.met, ex1.duration))
         print('PA 3: %s, %s, %s, %s, %s, %s, %s' % (
             ex2.name, ex2.category, ex2.indoors, ex2.outdoors, ex2.intensity, ex2.met, ex2.duration))
+        
+        print("Meal 1:")
+        phenotype[0].meal.print_meal()
+        print("Meal 2:")
+        phenotype[1].meal.print_meal()
+        print("Meal 3:")
+        phenotype[2].meal.print_meal()
 

@@ -1,4 +1,7 @@
 # This class represents the restriction related to the consistency and diversity of the recommendations.
+from src.ontology.bundle.Meal import Meal
+
+
 class ConsistencyAndDiversityRestriction:
 
     INTERPOLATION_REFERENCE_VALUE = 1.0
@@ -96,23 +99,23 @@ class ConsistencyAndDiversityRestriction:
             return score
 
     # This method evaluates the food size consistency in the meal in each bundle of the individual.
-    def __evaluate_size_consistency(self, meal):
+    def __evaluate_size_consistency(self, meal: Meal):
 
-        side_calories = meal.serving_size - meal.main_food_item.serving_size
-        side_calories_reference = side_calories / len(meal.side_food_items_list)
+        side_serving_size = meal.serving_size - meal.main_food_item.serving_size
+        side_serving_size_reference = side_serving_size / len(meal.side_food_items_list)
         side_scores = []
 
         for side_item in meal.side_food_items_list:
 
-            calories_difference = abs(side_calories_reference - side_item.serving_size)
+            serving_size_difference = abs(side_serving_size_reference - side_item.serving_size)
 
-            if calories_difference > side_calories_reference:
+            if serving_size_difference > side_serving_size_reference:
 
                 side_scores.append(1.0)
 
             else:
 
-                score = (calories_difference * self.INTERPOLATION_REFERENCE_VALUE) / side_calories_reference
+                score = (serving_size_difference * self.INTERPOLATION_REFERENCE_VALUE) / side_serving_size_reference
                 side_scores.append(score)
 
         aux_score = 0.0
