@@ -54,6 +54,9 @@ class Individual:
         self.aptitude = 0.0
         self.aptitude = aptitude
 
+    def set_aptitudes(self, aptitudes):
+        self.aptitudes = aptitudes
+
     # This  method sets the index of the individual
     def set_index(self, index):
 
@@ -62,6 +65,7 @@ class Individual:
     # This method evaluates the phenotype using the restrictions.
     def evaluate_phenotype(self, restrictions):
 
+        self.aptitudes = [0.0, 0.0, 0.0, 0.0]
         healthiness_aptitude = restrictions[self.FOOD_RESTRICTION_INDEX].evaluate(self.phenotype)
         self.aptitudes[self.FOOD_RESTRICTION_INDEX] = healthiness_aptitude
         consistency_diversity_restriction = restrictions[self.SEMANTIC_RESTRICTION_INDEX].evaluate(self.phenotype)

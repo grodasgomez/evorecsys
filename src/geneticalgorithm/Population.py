@@ -69,6 +69,7 @@ class Population:
 
         self.best_individual.set_phenotype(self.initial_population[best_individual_index].phenotype)
         self.best_individual.set_aptitude(self.initial_population[best_individual_index].aptitude)
+        self.best_individual.set_aptitudes(self.initial_population[best_individual_index].aptitudes)
         self.best_individual.set_index(best_individual_index)
 
     # This method executes the selection method: tournament whose size is 2.
