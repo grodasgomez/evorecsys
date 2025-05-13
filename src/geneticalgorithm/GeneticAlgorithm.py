@@ -1,4 +1,5 @@
 # All necessary libraries and imports from other files.
+import time
 from src.geneticalgorithm.restriction.ConsistencyAndDiversityRestriction import ConsistencyAndDiversityRestriction
 from src.geneticalgorithm.restriction.UserPreferencesRestriction import UserPreferencesRestriction
 from src.geneticalgorithm.restriction.HealthyFoodRestriction import HealthyFoodRestriction
@@ -37,6 +38,8 @@ class GeneticAlgorithm:
     def execute_genetic_algorithm(self):
 
         print('I have started the evolutionary process...')
+        start_time = time.time()
+
         population = Population(self.physical_data, self.food_preferences, self.pa_preferences, self.food_items,
                                 self.pa_items, self.number_of_individuals, self.restrictions,
                                 self.mutation_dictionary)
@@ -55,8 +58,14 @@ class GeneticAlgorithm:
             population.obtain_best_individual()
             generation_index += 1
 
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f'Algorithm execution time: {execution_time:.2f} seconds')
         print('I have finished; the recommendations are:')
-        self.__print_phenotype(population.best_individual.phenotype)
+        best_individual = population.best_individual
+        print(f"Best individual aptitudes: {best_individual.aptitudes}")
+        print(f"Best individual aptitude: {best_individual.aptitude}")
+        self.__print_phenotype(best_individual.phenotype)
 
         return population.best_individual.phenotype
 

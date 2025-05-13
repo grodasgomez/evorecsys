@@ -28,6 +28,7 @@ class Individual:
         self.pa_items = pas
         self.phenotype = []
         self.aptitude = ap
+        self.aptitudes = []
         self.index = -1
 
     # This method creates the list of bundles.
@@ -62,11 +63,16 @@ class Individual:
     def evaluate_phenotype(self, restrictions):
 
         healthiness_aptitude = restrictions[self.FOOD_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.FOOD_RESTRICTION_INDEX] = healthiness_aptitude
         consistency_diversity_restriction = restrictions[self.SEMANTIC_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.SEMANTIC_RESTRICTION_INDEX] = consistency_diversity_restriction
         exercising_aptitude = restrictions[self.EXERCISING_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.EXERCISING_RESTRICTION_INDEX] = exercising_aptitude
         user_preferences_aptitude = restrictions[self.USER_PREFERENCES_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX] = user_preferences_aptitude
         self.aptitude = (healthiness_aptitude + consistency_diversity_restriction + exercising_aptitude +
                          user_preferences_aptitude) / len(restrictions)
+
 
     # This method creates a single bundle. It calls other methods to build it.
     def __create_bundle(self, vegetable_indexes, physical_data):
