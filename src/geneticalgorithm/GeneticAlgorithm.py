@@ -24,8 +24,9 @@ class GeneticAlgorithm:
     #Constructor
     def __init__(self, user_data, most_similar_user_data):
 
-        self.number_of_individuals = 250
+        self.number_of_individuals = 50
         self.number_of_generations = 150
+        self.neighborhood_size = 20
         self.physical_data: PhysicalData
         self.food_preferences: FoodPreferenceData
         self.pa_preferences: PAPreferenceData
@@ -44,7 +45,7 @@ class GeneticAlgorithm:
         start_time = time.time()
         
         # Initialize MOEA/D
-        self.moead = MOEAD(self.number_of_individuals, len(self.restrictions))
+        self.moead = MOEAD(self.number_of_individuals, len(self.restrictions), self.neighborhood_size)
         self.moead.initialize_weight_vectors()
         self.moead.initialize_neighborhoods()
         
@@ -54,7 +55,7 @@ class GeneticAlgorithm:
                                 self.mutation_dictionary)
         population.create_population()
         population.evaluate_population()
-        self.moead.update_reference_point(population)
+        self.moead.initialize_reference_point(population)
         
         generation_index = 0
         while generation_index <= self.number_of_generations:
@@ -68,9 +69,12 @@ class GeneticAlgorithm:
                 
                 # Create offspring
                 offspring = self.__create_offspring(parent1, parent2, population)
+
+                # Evaluate offspring
+                offspring.evaluate_phenotype(self.restrictions)
                 
                 # Update reference point
-                self.moead.update_reference_point(population)
+                self.moead.update_reference_point(offspring) 
                 
                 # Update solutions in neighborhood
                 for j in neighborhood:
@@ -79,7 +83,11 @@ class GeneticAlgorithm:
                     offspring_scalar = self.moead.tchebycheff_scalarization(offspring, self.moead.weight_vectors[j])
                     
                     if offspring_scalar < current_scalar:
-                        population.initial_population[j] = offspring
+                        # Replace solution and update objective values (FV^j = F(y'))
+                        population.initial_population[j] = copy.deepcopy(offspring)
+                
+                # Update external population (Step 2.5)
+                self.moead.update_external_population(offspring)
             
             generation_index += 1
 
@@ -87,12 +95,19 @@ class GeneticAlgorithm:
         execution_time = end_time - start_time
         print(f'Algorithm execution time: {execution_time:.2f} seconds')
         print('I have finished; the recommendations are:')
-        # Find the best individual based on the final population
-        best_individual = min(population.initial_population, key=lambda x: sum(x.aptitudes))
+        
+        # Use the external population to find the best solution
+        if self.moead.external_population:
+            # Find the solution with the best average fitness
+            best_individual = min(self.moead.external_population, key=lambda x: x.aptitude)
+        else:
+            # Fallback to the original method if external population is empty
+            best_individual = min(population.initial_population, key=lambda x: x.aptitude)
+            
         print("Best individual aptitudes:")
         best_individual.print_aptitude()
         print("Best individual aptitude: ", best_individual.aptitude)
-        self.__print_phenotype(best_individual.phenotype)
+        # self.__print_phenotype(best_individual.phenotype)
 
         return best_individual.phenotype
 
@@ -116,9 +131,6 @@ class GeneticAlgorithm:
         # Perform mutation
         if random.random() < Population.MUTATION_PROBABILITY:
             population.execute_random_swap_of_items(offspring.phenotype)
-            
-        # Evaluate offspring
-        offspring.evaluate_phenotype(self.restrictions)
         
         return offspring
 
