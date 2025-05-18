@@ -279,3 +279,15 @@ class Individual:
 
             calories_list.append(random_calories)
             return self.__generate_random_calories(calories_list, remaining_items, remaining_calories)
+    
+    def print_aptitude(self):
+
+        healthiness_aptitude = self.aptitudes[self.FOOD_RESTRICTION_INDEX]
+        consistency_diversity_restriction = self.aptitudes[self.SEMANTIC_RESTRICTION_INDEX]
+        exercising_aptitude = self.aptitudes[self.EXERCISING_RESTRICTION_INDEX]
+        user_preferences_aptitude = self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX]
+
+        print("Healthiness: ", healthiness_aptitude)
+        print("Consistency and Diversity: ", consistency_diversity_restriction)
+        print("Exercising: ", exercising_aptitude)
+        print("User Preferences: ", user_preferences_aptitude)

@@ -89,8 +89,9 @@ class GeneticAlgorithm:
         print('I have finished; the recommendations are:')
         # Find the best individual based on the final population
         best_individual = min(population.initial_population, key=lambda x: sum(x.aptitudes))
-        print(f"Best individual aptitudes: {best_individual.aptitudes}")
-        print(f"Best individual aptitude: {best_individual.aptitude}")
+        print("Best individual aptitudes:")
+        best_individual.print_aptitude()
+        print("Best individual aptitude: ", best_individual.aptitude)
         self.__print_phenotype(best_individual.phenotype)
 
         return best_individual.phenotype
