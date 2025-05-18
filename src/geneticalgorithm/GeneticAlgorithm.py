@@ -62,9 +62,11 @@ class GeneticAlgorithm:
         execution_time = end_time - start_time
         print(f'Algorithm execution time: {execution_time:.2f} seconds')
         print('I have finished; the recommendations are:')
-        best_individual = population.best_individual
-        print(f"Best individual aptitudes: {best_individual.aptitudes}")
-        print(f"Best individual aptitude: {best_individual.aptitude}")
+        # Find the best individual based on the final population
+        best_individual = min(population.initial_population, key=lambda x: sum(x.aptitudes))
+        print("Best individual aptitudes:")
+        best_individual.print_aptitude()
+        print("Best individual aptitude: ", best_individual.aptitude)
         self.__print_phenotype(best_individual.phenotype)
 
         return population.best_individual.phenotype
