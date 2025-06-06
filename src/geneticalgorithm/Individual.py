@@ -291,3 +291,7 @@ class Individual:
         print("Consistency and Diversity: ", consistency_diversity_restriction)
         print("Exercising: ", exercising_aptitude)
         print("User Preferences: ", user_preferences_aptitude)
+
+    def user_preferences_aptitude(self):
+
+        return self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX]

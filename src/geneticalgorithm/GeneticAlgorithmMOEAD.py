@@ -1,4 +1,5 @@
 # All necessary libraries and imports from other files.
+from src.geneticalgorithm.Individual import Individual
 from src.geneticalgorithm.restriction.ConsistencyAndDiversityRestriction import ConsistencyAndDiversityRestriction
 from src.geneticalgorithm.restriction.UserPreferencesRestriction import UserPreferencesRestriction
 from src.geneticalgorithm.restriction.HealthyFoodRestriction import HealthyFoodRestriction
@@ -7,22 +8,25 @@ from src.ontology.user.PAPreferenceData import PAPreferenceData
 from src.ontology.user.FoodPreferenceData import FoodPreferenceData
 from src.ontology.user.PhysicalData import PhysicalData
 from src.geneticalgorithm.Population import Population
+from src.geneticalgorithm.MOEAD import MOEAD
 from src.database.ItemsConnection import ItemsConnection
 import random
 import copy
+import time
 
 
 # This class represents a Genetic Algorithm. It uses the information of the current user and the most similar user data
 # obtained by the nearest-neighbour collaborative filtering step.
-class GeneticAlgorithm:
+class GeneticAlgorithmMOEAD:
 
     NUMBER_OF_MEALS_PER_DAY = 3
 
     #Constructor
     def __init__(self, user_data, most_similar_user_data):
 
-        self.number_of_individuals = 250
-        self.number_of_generations = 150
+        self.number_of_individuals = 455
+        self.number_of_generations = 50
+        self.neighborhood_size = 20
         self.physical_data: PhysicalData
         self.food_preferences: FoodPreferenceData
         self.pa_preferences: PAPreferenceData
@@ -30,6 +34,7 @@ class GeneticAlgorithm:
         self.pa_items = []
         self.restrictions = []
         self.mutation_dictionary = {}
+        self.moead = None
 
         self.__configure_data(user_data, most_similar_user_data)
 
@@ -37,28 +42,140 @@ class GeneticAlgorithm:
     def execute_genetic_algorithm(self):
 
         print('I have started the evolutionary process...')
+        start_time = time.time()
+        
+        # Initialize MOEA/D
+        self.moead = MOEAD(self.number_of_individuals, len(self.restrictions), self.neighborhood_size)
+        self.moead.initialize_weight_vectors()
+        self.moead.initialize_neighborhoods()
+        
+        # Create initial population
         population = Population(self.physical_data, self.food_preferences, self.pa_preferences, self.food_items,
                                 self.pa_items, self.number_of_individuals, self.restrictions,
                                 self.mutation_dictionary)
         population.create_population()
         population.evaluate_population()
-        population.obtain_best_individual()
-
+        self.moead.initialize_reference_point(population)
+        
+        offspring_times = []
+        evaluation_times = []
+        update_reference_point_times = []
+        update_neighborhood_times = []
+        update_external_population_times = []
+        
         generation_index = 0
-
+        algorithm_start_time = time.time()
         while generation_index <= self.number_of_generations:
-
-            population.execute_tournament()
-            population.execute_genetic_operators()
-            population.clone_population()
-            population.evaluate_population()
-            population.obtain_best_individual()
+            # For each subproblem
+            for i in range(self.number_of_individuals):
+                # Select parents from neighborhood
+                neighborhood = self.moead.neighborhoods[i]
+                parents = random.sample(neighborhood, 2)
+                parent1 = population.initial_population[parents[0]]
+                parent2 = population.initial_population[parents[1]]
+                
+                # Create offspring
+                offsprint_start_time = time.time()
+                offspring = self.__create_offspring(parent1, parent2, population)
+                offsprint_end_time = time.time()
+                offspring_times.append(offsprint_end_time - offsprint_start_time)
+                # Evaluate offspring
+                evaluation_start_time = time.time()
+                offspring.evaluate_phenotype(self.restrictions)
+                evaluation_end_time = time.time()
+                evaluation_times.append(evaluation_end_time - evaluation_start_time)
+                # Update reference point
+                update_reference_point_start_time = time.time()
+                self.moead.update_reference_point(offspring) 
+                update_reference_point_end_time = time.time()
+                update_reference_point_times.append(update_reference_point_end_time - update_reference_point_start_time)
+                
+                # Update solutions in neighborhood
+                for j in neighborhood:
+                    update_neighborhood_start_time = time.time()
+                    current_solution = population.initial_population[j]
+                    current_scalar = self.moead.tchebycheff_scalarization(current_solution, self.moead.weight_vectors[j])
+                    offspring_scalar = self.moead.tchebycheff_scalarization(offspring, self.moead.weight_vectors[j])
+                    
+                    if offspring_scalar < current_scalar:
+                        # Replace solution and update objective values (FV^j = F(y'))
+                        population.initial_population[j] = copy.deepcopy(offspring)
+                    update_neighborhood_end_time = time.time()
+                    update_neighborhood_times.append(update_neighborhood_end_time - update_neighborhood_start_time)
+                
+                # Update external population (Step 2.5)
+                update_external_population_start_time = time.time()
+                self.moead.update_external_population(offspring)
+                update_external_population_end_time = time.time()
+                update_external_population_times.append(update_external_population_end_time - update_external_population_start_time)
+            
             generation_index += 1
 
-        print('I have finished; the recommendations are:')
-        self.__print_phenotype(population.best_individual.phenotype)
+        algorithm_end_time = time.time()
+        algorithm_execution_time = algorithm_end_time - algorithm_start_time
+        print(f'Algorithm execution time: {algorithm_execution_time:.2f} seconds')
 
-        return population.best_individual
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f'Total execution time: {execution_time:.2f} seconds')
+        
+        print(f'Offspring avg creation time: {sum(offspring_times) / len(offspring_times) * 1000:.3f} milliseconds')
+        print(f'Offspring total creation time: {sum(offspring_times):.2f} seconds')
+
+        print(f'Evaluation avg time: {sum(evaluation_times) / len(evaluation_times) * 1000:.3f} milliseconds')
+        print(f'Evaluation total time: {sum(evaluation_times):.2f} seconds')
+
+        print(f'Update reference point avg time: {sum(update_reference_point_times) / len(update_reference_point_times) * 1000:.3f} milliseconds')
+        print(f'Update reference point total time: {sum(update_reference_point_times):.2f} seconds')
+
+        print(f'Update neighborhood avg time: {sum(update_neighborhood_times) / len(update_neighborhood_times) * 1000:.3f} milliseconds')
+        print(f'Update neighborhood total time: {sum(update_neighborhood_times):.2f} seconds')
+
+        print(f'Update external population avg time: {sum(update_external_population_times) / len(update_external_population_times) * 1000:.3f} milliseconds')
+        print(f'Update external population total time: {sum(update_external_population_times):.2f} seconds')
+
+        print(f'External population size: {len(self.moead.external_population)}')
+
+        individual_with_lower_user_preferences_aptitude = min(self.moead.external_population, key=lambda x: x.user_preferences_aptitude())
+        print(f'Individual with the lower aptitude in the User Preferences Restriction')
+        print(f'Aptitude: {individual_with_lower_user_preferences_aptitude.aptitude}')
+        print(f'Aptitudes: {individual_with_lower_user_preferences_aptitude.aptitudes}')
+        print('I have finished; the recommendations are:')
+        
+    
+        # Find the solution with the best average fitness
+        best_individual = min(self.moead.external_population, key=lambda x: x.aptitude)
+        
+            
+        print("Best individual aptitudes:")
+        best_individual.print_aptitude()
+        print("Best individual aptitude: ", best_individual.aptitude)
+        # self.__print_phenotype(best_individual.phenotype)
+
+        return best_individual.phenotype
+
+    def __create_offspring(self, parent1, parent2, population):
+        # Create a new individual
+        offspring = Individual()
+        
+        # Perform crossover
+        if random.random() < Population.CROSSOVER_PROBABILITY:
+            # Create new phenotype by combining parents
+            new_phenotype = []
+            for i in range(len(parent1.phenotype)):
+                if random.random() < 0.5:
+                    new_phenotype.append(copy.deepcopy(parent1.phenotype[i]))
+                else:
+                    new_phenotype.append(copy.deepcopy(parent2.phenotype[i]))
+            offspring.set_phenotype(new_phenotype)
+        else:
+            offspring.set_phenotype(copy.deepcopy(parent1.phenotype))
+            
+        # Perform mutation
+        if random.random() < Population.MUTATION_PROBABILITY:
+            population.execute_random_swap_of_items(offspring.phenotype)
+        
+        return offspring
 
     # This method utilises the information given to configure all the elements needed during the evolutionary execution.
     def __configure_data(self, user_data, most_similar_user_data):
@@ -310,4 +427,11 @@ class GeneticAlgorithm:
             ex1.name, ex1.category, ex1.indoors, ex1.outdoors, ex1.intensity, ex1.met, ex1.duration))
         print('PA 3: %s, %s, %s, %s, %s, %s, %s' % (
             ex2.name, ex2.category, ex2.indoors, ex2.outdoors, ex2.intensity, ex2.met, ex2.duration))
+        
+        print("Meal 1:")
+        phenotype[0].meal.print_meal()
+        print("Meal 2:")
+        phenotype[1].meal.print_meal()
+        print("Meal 3:")
+        phenotype[2].meal.print_meal()
 

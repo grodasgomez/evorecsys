@@ -28,7 +28,7 @@ class MOEAD:
     def initialize_weight_vectors(self):
         
         m = self.number_of_objectives
-        H = 1
+        H = 12
         while True:
             n_vectors = len(self._generate_combinations(m, H))
             if n_vectors >= self.population_size:
@@ -81,23 +81,33 @@ class MOEAD:
 
     def dominates(self, individual1, individual2):
         """Check if individual1 dominates individual2"""
-        is_better_in_any_objective = False
 
+        # Check if individual1 is better or equal in every objective
+        for i in range(self.number_of_objectives):
+            isBetterOrEqual = individual1.aptitudes[i] <= individual2.aptitudes[i]
+            if not isBetterOrEqual:
+                return False
+
+        #Check if individual1 is better at least in one objective
         for i in range(self.number_of_objectives):
             isBetter = individual1.aptitudes[i] < individual2.aptitudes[i]
-            isBetterOrEqual = individual1.aptitudes[i] <= individual2.aptitudes[i]
-            if not isBetter:
-                return False
-            if isBetterOrEqual:
-                is_better_in_any_objective = True
-        return is_better_in_any_objective
+            if isBetter:
+                return True
+        return False
     
     def update_external_population(self, new_solution):
         """Update the external population with a new solution"""
-        # Remove solutions dominated by the new solution
-        self.external_population = [sol for sol in self.external_population 
-                                  if not self.dominates(new_solution, sol)]
+        # First check if the new solution is dominated by any existing solution
+        is_dominated = False
+        non_dominated_solutions = []
         
-        # Add new solution if it's not dominated by any existing solution
-        if not any(self.dominates(sol, new_solution) for sol in self.external_population):
-            self.external_population.append(new_solution)
+        for sol in self.external_population:
+            if self.dominates(sol, new_solution):
+                is_dominated = True
+                break
+            if not self.dominates(new_solution, sol):
+                non_dominated_solutions.append(sol)
+        
+        # Only update if the new solution is not dominated
+        if not is_dominated:
+            self.external_population = non_dominated_solutions + [new_solution]

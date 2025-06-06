@@ -11,6 +11,7 @@ import tornado.escape
 import tornado.ioloop
 import tornado.web
 import os
+import json
 
 
 # This class loads the cover of EvoRecSys.
@@ -522,8 +523,12 @@ class ProcessData(tornado.web.RequestHandler):
 
         # This object creates an instance of a Genetic Algorithm and both user_data and most similar user data are the
         # main parameters of it.
+        print(json.dumps(user_data))
+        print(json.dumps(similar_user_data))
         ga = GeneticAlgorithm(user_data, similar_user_data)
-        suggested_bundles = ga.execute_genetic_algorithm()
+        best_individual = ga.execute_genetic_algorithm()
+
+        suggested_bundles = best_individual.phenotype
 
         me0main_ = suggested_bundles[0].meal.main_food_item.name
         me0main = me0main_.replace(" ", "_")
