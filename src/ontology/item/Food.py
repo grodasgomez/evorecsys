@@ -8,7 +8,7 @@ class Food(Item):
 
     # Constructor
     def __init__(self, name, category, main, breakfast, lunch, dinner, vegetarian, vegan, size, cal, prot, carbo, sug,
-                 fib, fat, sat_fat, sod):
+                 fib, fat, sat_fat, sod, glycemic_index):
 
         super().__init__(name, category)
 
@@ -27,6 +27,7 @@ class Food(Item):
         self.fat = fat
         self.saturated_fat = sat_fat
         self.sodium = sod
+        self.glycemic_index = glycemic_index
 
     def print_food(self):
         print(f"Name: {self.name}")
@@ -46,3 +47,6 @@ class Food(Item):
         print(f"Fat: {self.fat}")
         print(f"Saturated fat: {self.saturated_fat}")
         print(f"Sodium: {self.sodium}")
+
+    def get_glycemic_load(self):
+        return self.glycemic_index * self.carbohydrate / 100

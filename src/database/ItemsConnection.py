@@ -37,7 +37,7 @@ class ItemsConnection(Connection):
         for food in cursor:
 
             f = Food(food[1], "vegetable", food[2], food[3], food[4], food[5], food[6], food[7], food[8], food[9],
-                     food[10], food[11], food[12], food[13], food[14], food[15], food[17])
+                     food[10], food[11], food[12], food[13], food[14], food[15], food[17], food[18])
             side_items.append(f)
 
         if len(selected_food_items) <= 0:
@@ -48,7 +48,7 @@ class ItemsConnection(Connection):
             for food in cursor:
 
                 f = Food(food[1], "pasta", food[2], food[3], food[4], food[5], food[6], food[7], food[8], food[9],
-                         food[10], food[11], food[12], food[13], food[14], food[15], food[17])
+                         food[10], food[11], food[12], food[13], food[14], food[15], food[17], food[18])
                 main_items.append(f)
 
             cursor.execute('SELECT * FROM evo_rec_sys_v2.food_nut WHERE is_main =' + self.SIDE_VALUE +
@@ -57,7 +57,7 @@ class ItemsConnection(Connection):
             for food in cursor:
 
                 f = Food(food[1], "nut", food[2], food[3], food[4], food[5], food[6], food[7], food[8], food[9],
-                         food[10], food[11], food[12], food[13], food[14], food[15], food[17])
+                         food[10], food[11], food[12], food[13], food[14], food[15], food[17], food[18])
                 side_items.append(f)
 
         else:
@@ -74,7 +74,7 @@ class ItemsConnection(Connection):
                 for food in cursor:
 
                     f = Food(food[1], selected_food_item, food[2], food[3], food[4], food[5], food[6], food[7], food[8],
-                             food[9], food[10], food[11], food[12], food[13], food[14], food[15], food[17])
+                             food[9], food[10], food[11], food[12], food[13], food[14], food[15], food[17], food[18])
                     main_items.append(f)
 
                 cursor.execute('SELECT * FROM evo_rec_sys_v2.food_' + selected_food_item + ' WHERE is_main =' +
@@ -82,7 +82,7 @@ class ItemsConnection(Connection):
 
                 for food in cursor:
                     f = Food(food[1], selected_food_item, food[2], food[3], food[4], food[5], food[6], food[7], food[8],
-                             food[9], food[10], food[11], food[12], food[13], food[14], food[15], food[17])
+                             food[9], food[10], food[11], food[12], food[13], food[14], food[15], food[17], food[18])
                     side_items.append(f)
 
         cursor.close()
@@ -185,7 +185,7 @@ class ItemsConnection(Connection):
             for food in cursor:
 
                 f = Food(food[1], food_item, food[2], food[3], food[4], food[5], food[6], food[7], food[8],
-                         food[9], food[10], food[11], food[12], food[13], food[14], food[15], food[17])
+                         food[9], food[10], food[11], food[12], food[13], food[14], food[15], food[17], food[18])
                 main_items.append(f)
 
             cursor.execute('SELECT * FROM evo_rec_sys_v2.food_' + food_item + ' WHERE is_main =' +
@@ -193,7 +193,7 @@ class ItemsConnection(Connection):
 
             for food in cursor:
                 f = Food(food[1], food_item, food[2], food[3], food[4], food[5], food[6], food[7], food[8],
-                         food[9], food[10], food[11], food[12], food[13], food[14], food[15], food[17])
+                         food[9], food[10], food[11], food[12], food[13], food[14], food[15], food[17], food[18])
                 side_items.append(f)
 
         cursor.close()

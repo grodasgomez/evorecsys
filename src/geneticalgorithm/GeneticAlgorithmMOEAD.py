@@ -1,4 +1,5 @@
 # All necessary libraries and imports from other files.
+from src.geneticalgorithm.restriction.LoadGlycemicRestriction import LoadGlycemicRestriction
 from src.geneticalgorithm.Individual import Individual
 from src.geneticalgorithm.restriction.ConsistencyAndDiversityRestriction import ConsistencyAndDiversityRestriction
 from src.geneticalgorithm.restriction.UserPreferencesRestriction import UserPreferencesRestriction
@@ -228,6 +229,7 @@ class GeneticAlgorithmMOEAD:
         self.__build_diversity_and_consistency_restriction()
         self.__build_pa_restriction(self.pa_preferences.minutes)
         self.__build_user_preferences_restriction(high_evaluated_food_types, high_evaluated_activity_types)
+        self.restrictions.append(LoadGlycemicRestriction())
 
     def __build_healthy_food_restriction(self):
 

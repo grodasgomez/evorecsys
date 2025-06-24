@@ -14,7 +14,7 @@ class Meal:
                                    main_food_data[4], main_food_data[5], main_food_data[6], main_food_data[7],
                                    main_food_data[8], main_food_data[9], main_food_data[10], main_food_data[11],
                                    main_food_data[12], main_food_data[13], main_food_data[14], main_food_data[15],
-                                   main_food_data[16])
+                                   main_food_data[16], main_food_data[17])
         self.side_food_items_list: list[Food] = []
         self.serving_size = 0.0
         self.number_of_calories = 0.0
@@ -25,6 +25,7 @@ class Meal:
         self.fats = 0.0
         self.saturated_fats = 0.0
         self.sodium = 0.0
+        self.load_glycemic = 0.0
 
         self.__create_meal(main_food_data, side_food_data_list)
 
@@ -41,12 +42,14 @@ class Meal:
         self.saturated_fats += self.main_food_item.saturated_fat
         self.sodium += self.main_food_item.sodium
 
+        self.load_glycemic += self.main_food_item.get_glycemic_load()
+
         for side_food_data in side_food_data_list:
 
             item = Food(side_food_data[0], side_food_data[1], side_food_data[2], side_food_data[3], side_food_data[4],
                         side_food_data[5], side_food_data[6], side_food_data[7], side_food_data[8], side_food_data[9],
                         side_food_data[10], side_food_data[11], side_food_data[12], side_food_data[13],
-                        side_food_data[14], side_food_data[15], side_food_data[16])
+                        side_food_data[14], side_food_data[15], side_food_data[16], side_food_data[17])
             self.serving_size += item.serving_size
             self.number_of_calories += item.number_of_calories
             self.proteins += item.protein
@@ -56,6 +59,7 @@ class Meal:
             self.fats += item.fat
             self.saturated_fats += item.saturated_fat
             self.sodium += item.sodium
+            self.load_glycemic += item.get_glycemic_load()
 
             self.side_food_items_list.append(item)
 
@@ -73,6 +77,7 @@ class Meal:
         self.fats -= self.main_food_item.fat
         self.saturated_fats -= self.main_food_item.saturated_fat
         self.sodium -= self.main_food_item.sodium
+        self.load_glycemic -= self.main_food_item.get_glycemic_load()
 
         reference_calories = copy.deepcopy(self.main_food_item.number_of_calories)
         tailored_serving_size = (reference_calories * main_item.serving_size) / main_item.number_of_calories
@@ -83,11 +88,12 @@ class Meal:
         tailored_fat = (reference_calories * main_item.fat) / main_item.number_of_calories
         tailored_saturated_fat = (reference_calories * main_item.saturated_fat) / main_item.number_of_calories
         tailored_sodium = (reference_calories * main_item.sodium) / main_item.number_of_calories
+        
         self.main_food_item = Food(main_item.name, main_item.category, main_item.is_main, main_item.is_breakfast,
                                    main_item.is_lunch, main_item.is_dinner, main_item.is_vegetarian, main_item.is_vegan,
                                    tailored_serving_size, reference_calories, tailored_protein, tailored_carbohydrate,
                                    tailored_sugar, tailored_fibre, tailored_fat, tailored_saturated_fat,
-                                   tailored_sodium)
+                                   tailored_sodium, main_item.glycemic_index)
         self.serving_size += tailored_serving_size
         self.number_of_calories += reference_calories
         self.proteins += tailored_protein
@@ -97,6 +103,8 @@ class Meal:
         self.fats += tailored_fat
         self.saturated_fats += tailored_saturated_fat
         self.sodium += tailored_sodium
+        self.load_glycemic += main_item.get_glycemic_load()
+
 
     # This method replaces a side item of a meal by index. It is used by the evolutionary process.
     def replace_side_item(self, side_item, index):
@@ -110,6 +118,7 @@ class Meal:
         self.fats -= self.side_food_items_list[index].fat
         self.saturated_fats -= self.side_food_items_list[index].saturated_fat
         self.sodium -= self.side_food_items_list[index].sodium
+        self.load_glycemic -= self.side_food_items_list[index].get_glycemic_load()
 
         reference_calories = copy.deepcopy(self.side_food_items_list[index].number_of_calories)
         tailored_serving_size = (reference_calories * side_item.serving_size) / side_item.number_of_calories
@@ -124,7 +133,8 @@ class Meal:
         side_food_item = Food(side_item.name, side_item.category, side_item.is_main, side_item.is_breakfast,
                               side_item.is_lunch, side_item.is_dinner, side_item.is_vegetarian, side_item.is_vegan,
                               tailored_serving_size, reference_calories, tailored_protein, tailored_carbohydrate,
-                              tailored_sugar, tailored_fibre, tailored_fat, tailored_saturated_fat, tailored_sodium)
+                              tailored_sugar, tailored_fibre, tailored_fat, tailored_saturated_fat, tailored_sodium,
+                              side_item.glycemic_index)
         self.side_food_items_list.insert(index, side_food_item)
         self.serving_size += tailored_serving_size
         self.number_of_calories += reference_calories
@@ -135,6 +145,7 @@ class Meal:
         self.fats += tailored_fat
         self.saturated_fats += tailored_saturated_fat
         self.sodium += tailored_sodium
+        self.load_glycemic += side_item.get_glycemic_load()
 
     def __normalise_values(self):
 

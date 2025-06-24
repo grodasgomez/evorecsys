@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.38, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: evo_rec_sys_v2
+-- Host: localhost    Database: evo_rec_sys_v2
 -- ------------------------------------------------------
--- Server version	8.0.26-0ubuntu0.20.04.3
+-- Server version	8.0.38
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -371,6 +371,7 @@ CREATE TABLE `food_bread` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -381,7 +382,7 @@ CREATE TABLE `food_bread` (
 
 LOCK TABLES `food_bread` WRITE;
 /*!40000 ALTER TABLE `food_bread` DISABLE KEYS */;
-INSERT INTO `food_bread` VALUES (1,'Bread (French)',0,1,1,1,1,0,35,96,3,18,0,1.1,1,0.2,0,0.213),(2,'Bread (Italian)',0,1,1,1,1,0,35,95,3,18,0,0.9,1,0.3,0,0.204),(3,'Bread (mixed-grain)',0,1,1,1,1,0,35,88,4,16,4,2.2,1,0.3,0,0.17),(4,'Bread (oatmeal)',0,1,1,1,1,0,35,94,3,17,3,1.4,2,0.2,0,0.21),(5,'Bread (pita white)',0,1,1,1,1,0,60,165,5,33,1,1.3,1,0.1,0,0.322),(6,'Bread (pita whole wheat)',0,1,1,1,1,0,64,170,6,35,1,4.7,2,0.3,0,0.34),(7,'Bread (pumpermickel)',0,1,1,1,1,0,35,88,3,17,0,2.3,1,0.3,0,0.235),(8,'Bread (rye)',0,1,1,1,1,0,35,91,3,17,1,2,1,0.2,0,0.231),(9,'Bread (white)',0,1,1,1,1,0,35,93,3,18,2,0.8,1,0.3,0,0.238),(10,'Bread (whole wheat)',0,1,1,1,1,0,35,86,3,16,7,2.4,1,0.3,0,0.184),(11,'Roll (hamburguer or hotdog white)',0,0,1,0,1,0,43,120,4,21,3,0.9,2,0.5,0,0.206),(12,'Roll (hamburguer or hotdog whole wheat)',0,0,1,0,1,0,43,113,4,19,3,1.6,3,0.6,0,0.197),(13,'Tortilla (corn)',0,1,1,1,1,1,19,41,1,8,0,1.2,1,0.1,0,0.009),(14,'Tortilla (whole wheat)',0,1,1,1,1,1,49,159,4,27,0,1.6,3,0.9,0,0.234),(15,'French toast',0,1,0,0,1,0,59,126,4,19,0,0.6,4,0.9,0.048,0.292),(16,'Pancake (homemade)',0,1,0,0,1,0,38,86,2,11,0,0.5,4,0.8,0.022,0.167),(17,'Waffle (homemade)',0,1,0,0,1,0,37,103,3,14,2,0.5,4,0.7,0.033,0.146),(18,'Rusk toast',0,1,1,1,1,0,10,41,1,7,0,0.6,1,0.1,0,0.025),(19,'Crackers (wheat)',0,1,1,1,1,0,20,95,2,13,1,1.4,3,2,0,0.173),(20,'Crackers (whole wheat)',0,1,1,1,1,1,16,71,1,11,0,1.7,3,0.5,0,0.105);
+INSERT INTO `food_bread` VALUES (1,'Bread (French)',0,1,1,1,1,0,35,96,3,18,0,1.1,1,0.2,0,0.213,42),(2,'Bread (Italian)',0,1,1,1,1,0,35,95,3,18,0,0.9,1,0.3,0,0.204,56),(3,'Bread (mixed-grain)',0,1,1,1,1,0,35,88,4,16,4,2.2,1,0.3,0,0.17,46),(4,'Bread (oatmeal)',0,1,1,1,1,0,35,94,3,17,3,1.4,2,0.2,0,0.21,9),(5,'Bread (pita white)',0,1,1,1,1,0,60,165,5,33,1,1.3,1,0.1,0,0.322,36),(6,'Bread (pita whole wheat)',0,1,1,1,1,0,64,170,6,35,1,4.7,2,0.3,0,0.34,41),(7,'Bread (pumpermickel)',0,1,1,1,1,0,35,88,3,17,0,2.3,1,0.3,0,0.235,20),(8,'Bread (rye)',0,1,1,1,1,0,35,91,3,17,1,2,1,0.2,0,0.231,19),(9,'Bread (white)',0,1,1,1,1,0,35,93,3,18,2,0.8,1,0.3,0,0.238,30),(10,'Bread (whole wheat)',0,1,1,1,1,0,35,86,3,16,7,2.4,1,0.3,0,0.184,66),(11,'Roll (hamburguer or hotdog white)',0,0,1,0,1,0,43,120,4,21,3,0.9,2,0.5,0,0.206,15),(12,'Roll (hamburguer or hotdog whole wheat)',0,0,1,0,1,0,43,113,4,19,3,1.6,3,0.6,0,0.197,99),(13,'Tortilla (corn)',0,1,1,1,1,1,19,41,1,8,0,1.2,1,0.1,0,0.009,39),(14,'Tortilla (whole wheat)',0,1,1,1,1,1,49,159,4,27,0,1.6,3,0.9,0,0.234,54),(15,'French toast',0,1,0,0,1,0,59,126,4,19,0,0.6,4,0.9,0.048,0.292,9),(16,'Pancake (homemade)',0,1,0,0,1,0,38,86,2,11,0,0.5,4,0.8,0.022,0.167,3),(17,'Waffle (homemade)',0,1,0,0,1,0,37,103,3,14,2,0.5,4,0.7,0.033,0.146,34),(18,'Rusk toast',0,1,1,1,1,0,10,41,1,7,0,0.6,1,0.1,0,0.025,91),(19,'Crackers (wheat)',0,1,1,1,1,0,20,95,2,13,1,1.4,3,2,0,0.173,48),(20,'Crackers (whole wheat)',0,1,1,1,1,1,16,71,1,11,0,1.7,3,0.5,0,0.105,20);
 /*!40000 ALTER TABLE `food_bread` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -411,6 +412,7 @@ CREATE TABLE `food_cereal` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -421,7 +423,7 @@ CREATE TABLE `food_cereal` (
 
 LOCK TABLES `food_cereal` WRITE;
 /*!40000 ALTER TABLE `food_cereal` DISABLE KEYS */;
-INSERT INTO `food_cereal` VALUES (1,'Oat bran',1,1,0,1,1,1,179,73,3,12,0,3.4,1,0.3,0,0.001),(2,'All bran (cereal)',1,1,0,1,1,1,35,92,4,27,6,11.8,1,0,0,0.305),(3,'Cheerios honey nut (cereal)',1,1,0,1,1,0,35,134,3,28,12,2.1,1,0,0,0.252),(4,'Corn flakes (cereal)',1,1,0,1,1,1,26,103,2,23,2,0.7,0,0,0,0.19),(5,'Special K',1,1,0,1,1,1,24,94,4,18,2,0.3,0,0,0,0.226),(6,'Weetabix',1,1,0,1,1,1,35,130,4,29,2,4.4,1,0.1,0,0.126),(7,'Froot Loops',1,1,0,1,1,1,30,116,1,26,14,0.6,1,0,0,0.121),(8,'Frosted Flakes',1,1,0,1,1,1,37,142,2,33,15,0.6,0,0,0,0.196);
+INSERT INTO `food_cereal` VALUES (1,'Oat bran',1,1,0,1,1,1,179,73,3,12,0,3.4,1,0.3,0,0.001,71),(2,'All bran (cereal)',1,1,0,1,1,1,35,92,4,27,6,11.8,1,0,0,0.305,15),(3,'Cheerios honey nut (cereal)',1,1,0,1,1,0,35,134,3,28,12,2.1,1,0,0,0.252,61),(4,'Corn flakes (cereal)',1,1,0,1,1,1,26,103,2,23,2,0.7,0,0,0,0.19,39),(5,'Special K',1,1,0,1,1,1,24,94,4,18,2,0.3,0,0,0,0.226,23),(6,'Weetabix',1,1,0,1,1,1,35,130,4,29,2,4.4,1,0.1,0,0.126,10),(7,'Froot Loops',1,1,0,1,1,1,30,116,1,26,14,0.6,1,0,0,0.121,51),(8,'Frosted Flakes',1,1,0,1,1,1,37,142,2,33,15,0.6,0,0,0,0.196,8);
 /*!40000 ALTER TABLE `food_cereal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -451,6 +453,7 @@ CREATE TABLE `food_dairy` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -461,7 +464,7 @@ CREATE TABLE `food_dairy` (
 
 LOCK TABLES `food_dairy` WRITE;
 /*!40000 ALTER TABLE `food_dairy` DISABLE KEYS */;
-INSERT INTO `food_dairy` VALUES (1,'Milk',0,1,0,0,1,0,259,88,9,13,13,0,0,0.2,0.005,0.109),(2,'Milk (partly skimmed)',0,1,0,0,1,0,258,129,9,12,13,0,5,3.3,0.021,0.106),(3,'Milk (skimmed)',0,1,0,0,1,0,258,155,8,12,14,0,8,5.4,0.026,0.103),(4,'Rice milk',0,1,0,0,1,1,259,127,0,26,0,0,2,0.2,0,0.091),(5,'Soy milk',0,1,0,0,1,1,257,110,7,13,9,0,4,0.5,0,0.12),(6,'Yoghurt',1,1,0,0,1,0,207,145,5,24,24,0,3,2.1,0.012,0.081),(7,'Kefir',1,1,0,0,1,0,165,104,6,7,6,0,6,3.8,0.025,0.07),(8,'Blue cheese',0,0,1,1,1,0,50,177,11,1,0,0,14,9.3,0.038,0.698),(9,'Cheddar chesse',0,0,1,1,1,0,50,202,12,1,0,0,17,10.5,0.053,0.311),(10,'Goat cheese',0,0,1,1,1,0,50,134,9,0,0,0,11,7.3,0.023,0.184),(11,'Cottage cheese',0,1,1,1,1,0,119,86,15,3,3,0,1,0.8,0.005,0.5),(12,'Gouda cheese',0,1,1,1,1,0,50,178,13,1,1,0,14,9,0.058,0.41),(13,'Mozzarella',0,0,1,1,1,0,50,141,10,1,1,0,11,6.8,0.039,0.187);
+INSERT INTO `food_dairy` VALUES (1,'Milk',0,1,0,0,1,0,259,88,9,13,13,0,0,0.2,0.005,0.109,30),(2,'Milk (partly skimmed)',0,1,0,0,1,0,258,129,9,12,13,0,5,3.3,0.021,0.106,42),(3,'Milk (skimmed)',0,1,0,0,1,0,258,155,8,12,14,0,8,5.4,0.026,0.103,83),(4,'Rice milk',0,1,0,0,1,1,259,127,0,26,0,0,2,0.2,0,0.091,34),(5,'Soy milk',0,1,0,0,1,1,257,110,7,13,9,0,4,0.5,0,0.12,78),(6,'Yoghurt',1,1,0,0,1,0,207,145,5,24,24,0,3,2.1,0.012,0.081,39),(7,'Kefir',1,1,0,0,1,0,165,104,6,7,6,0,6,3.8,0.025,0.07,9),(8,'Blue cheese',0,0,1,1,1,0,50,177,11,1,0,0,14,9.3,0.038,0.698,6),(9,'Cheddar chesse',0,0,1,1,1,0,50,202,12,1,0,0,17,10.5,0.053,0.311,28),(10,'Goat cheese',0,0,1,1,1,0,50,134,9,0,0,0,11,7.3,0.023,0.184,46),(11,'Cottage cheese',0,1,1,1,1,0,119,86,15,3,3,0,1,0.8,0.005,0.5,26),(12,'Gouda cheese',0,1,1,1,1,0,50,178,13,1,1,0,14,9,0.058,0.41,2),(13,'Mozzarella',0,0,1,1,1,0,50,141,10,1,1,0,11,6.8,0.039,0.187,79);
 /*!40000 ALTER TABLE `food_dairy` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -491,6 +494,7 @@ CREATE TABLE `food_egg` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -501,7 +505,7 @@ CREATE TABLE `food_egg` (
 
 LOCK TABLES `food_egg` WRITE;
 /*!40000 ALTER TABLE `food_egg` DISABLE KEYS */;
-INSERT INTO `food_egg` VALUES (1,'Egg white',1,1,1,1,1,0,33,226,14,0,0,0,0,0,0,0.106),(2,'Egg yolk',1,1,1,1,1,0,17,59,3,1,0,0,6,1.7,0.202,0.034),(3,'Fried egg',1,1,1,1,1,0,92,173,12,2,0,0,14,3.6,0.367,0.322),(4,'Boiled egg',1,1,1,1,1,0,50,78,6,1,0,0,5,1.6,0.216,0.062),(5,'Poached egg',1,1,1,1,1,0,50,74,6,0,0,0,5,1.5,0.215,0.147),(6,'Scrambled egg',1,1,1,1,1,0,124,189,13,4,0,0,14,4.1,0.363,0.476),(7,'Spanish omelet',1,1,1,1,1,0,290,319,15,13,0,0,24,5.7,0.353,0.607);
+INSERT INTO `food_egg` VALUES (1,'Egg white',1,1,1,1,1,0,33,226,14,0,0,0,0,0,0,0.106,5),(2,'Egg yolk',1,1,1,1,1,0,17,59,3,1,0,0,6,1.7,0.202,0.034,14),(3,'Fried egg',1,1,1,1,1,0,92,173,12,2,0,0,14,3.6,0.367,0.322,84),(4,'Boiled egg',1,1,1,1,1,0,50,78,6,1,0,0,5,1.6,0.216,0.062,66),(5,'Poached egg',1,1,1,1,1,0,50,74,6,0,0,0,5,1.5,0.215,0.147,59),(6,'Scrambled egg',1,1,1,1,1,0,124,189,13,4,0,0,14,4.1,0.363,0.476,78),(7,'Spanish omelet',1,1,1,1,1,0,290,319,15,13,0,0,24,5.7,0.353,0.607,75);
 /*!40000 ALTER TABLE `food_egg` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -531,6 +535,7 @@ CREATE TABLE `food_fish` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -541,7 +546,7 @@ CREATE TABLE `food_fish` (
 
 LOCK TABLES `food_fish` WRITE;
 /*!40000 ALTER TABLE `food_fish` DISABLE KEYS */;
-INSERT INTO `food_fish` VALUES (1,'Canned anchovies',1,0,1,1,0,0,8,17,2,0,0,0,1,0.2,0.007,0.293),(2,'Herring',1,0,1,1,0,0,75,163,18,0,0,0,9,2.1,0.062,0.689),(3,'Mackerel',1,0,1,1,0,0,75,197,18,0,0,0,13,3.1,0.056,0.062),(4,'Ocean perch',1,0,1,1,0,0,75,91,18,0,0,0,2,0.2,0.041,0.072),(5,'Pollock',1,0,1,1,0,0,75,89,19,0,0,0,1,0.1,0.068,0.083),(6,'Salmon',1,0,1,1,0,0,75,134,18,0,0,0,6,1.5,0.047,0.039),(7,'Canned sarnide',1,0,1,1,0,0,106,220,26,0,0,0,12,1.6,0.151,0.535),(8,'Tuna',1,0,1,1,0,0,75,149,22,0,0,0,6,1.2,0.014,0.266),(9,'Turbot',1,0,1,1,0,0,75,92,15,0,0,0,3,0,0.047,0.144),(10,'Whitefish',1,0,1,1,0,0,75,100,17,0,0,0,3,0.9,0.058,0.033);
+INSERT INTO `food_fish` VALUES (1,'Canned anchovies',1,0,1,1,0,0,8,17,2,0,0,0,1,0.2,0.007,0.293,47),(2,'Herring',1,0,1,1,0,0,75,163,18,0,0,0,9,2.1,0.062,0.689,94),(3,'Mackerel',1,0,1,1,0,0,75,197,18,0,0,0,13,3.1,0.056,0.062,39),(4,'Ocean perch',1,0,1,1,0,0,75,91,18,0,0,0,2,0.2,0.041,0.072,86),(5,'Pollock',1,0,1,1,0,0,75,89,19,0,0,0,1,0.1,0.068,0.083,28),(6,'Salmon',1,0,1,1,0,0,75,134,18,0,0,0,6,1.5,0.047,0.039,19),(7,'Canned sarnide',1,0,1,1,0,0,106,220,26,0,0,0,12,1.6,0.151,0.535,29),(8,'Tuna',1,0,1,1,0,0,75,149,22,0,0,0,6,1.2,0.014,0.266,62),(9,'Turbot',1,0,1,1,0,0,75,92,15,0,0,0,3,0,0.047,0.144,46),(10,'Whitefish',1,0,1,1,0,0,75,100,17,0,0,0,3,0.9,0.058,0.033,62);
 /*!40000 ALTER TABLE `food_fish` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -571,6 +576,7 @@ CREATE TABLE `food_fruit` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -581,7 +587,7 @@ CREATE TABLE `food_fruit` (
 
 LOCK TABLES `food_fruit` WRITE;
 /*!40000 ALTER TABLE `food_fruit` DISABLE KEYS */;
-INSERT INTO `food_fruit` VALUES (1,'Apple',1,1,0,1,1,1,138,72,0,19,14,2.6,0,0,0,0.001),(2,'Banana',1,1,0,1,1,1,118,105,1,27,14,2.1,0,0,0,0.001),(3,'Grapes',0,1,0,1,1,1,100,69,1,18,15,1.2,0,0,0,0.002),(4,'Kiwi',1,1,0,1,1,1,76,46,1,11,7,2.3,0,0,0,0.002),(5,'Mango',1,1,0,1,1,1,104,67,1,18,15,1.9,0,0,0,0.002),(6,'Watermelon',1,1,0,1,1,1,80,24,0,6,5,0.3,0,0,0,0.001),(7,'Orange',0,1,0,1,1,1,131,62,1,15,12,2.3,0,0,0,0),(8,'Papaya',1,1,0,1,1,1,74,29,0,7,4,1.3,0,0,0,0.002),(9,'Peach',0,1,0,0,1,1,98,38,1,9,8,1.9,0,0,0,0),(10,'Pear',1,1,0,1,1,1,166,96,1,26,16,5,0,0,0,0.002),(11,'Pineapple',1,1,0,1,1,1,82,42,0,11,8,1.1,0,0,0,0.001),(12,'Mandarin (tangerine)',0,1,0,1,1,1,84,45,1,11,9,1.5,0,0,0,0.002),(13,'Plum',0,1,0,1,1,1,66,30,0,8,7,1.1,0,0,0,0),(14,'Grapefruit',0,1,0,1,1,1,123,52,1,13,8,2,0,0,0,0);
+INSERT INTO `food_fruit` VALUES (1,'Apple',1,1,0,1,1,1,138,72,0,19,14,2.6,0,0,0,0.001,5),(2,'Banana',1,1,0,1,1,1,118,105,1,27,14,2.1,0,0,0,0.001,100),(3,'Grapes',0,1,0,1,1,1,100,69,1,18,15,1.2,0,0,0,0.002,31),(4,'Kiwi',1,1,0,1,1,1,76,46,1,11,7,2.3,0,0,0,0.002,15),(5,'Mango',1,1,0,1,1,1,104,67,1,18,15,1.9,0,0,0,0.002,88),(6,'Watermelon',1,1,0,1,1,1,80,24,0,6,5,0.3,0,0,0,0.001,65),(7,'Orange',0,1,0,1,1,1,131,62,1,15,12,2.3,0,0,0,0,83),(8,'Papaya',1,1,0,1,1,1,74,29,0,7,4,1.3,0,0,0,0.002,11),(9,'Peach',0,1,0,0,1,1,98,38,1,9,8,1.9,0,0,0,0,93),(10,'Pear',1,1,0,1,1,1,166,96,1,26,16,5,0,0,0,0.002,23),(11,'Pineapple',1,1,0,1,1,1,82,42,0,11,8,1.1,0,0,0,0.001,69),(12,'Mandarin (tangerine)',0,1,0,1,1,1,84,45,1,11,9,1.5,0,0,0,0.002,31),(13,'Plum',0,1,0,1,1,1,66,30,0,8,7,1.1,0,0,0,0,98),(14,'Grapefruit',0,1,0,1,1,1,123,52,1,13,8,2,0,0,0,0,68);
 /*!40000 ALTER TABLE `food_fruit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -611,6 +617,7 @@ CREATE TABLE `food_grain` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -621,7 +628,7 @@ CREATE TABLE `food_grain` (
 
 LOCK TABLES `food_grain` WRITE;
 /*!40000 ALTER TABLE `food_grain` DISABLE KEYS */;
-INSERT INTO `food_grain` VALUES (1,'Bulgur',0,1,1,1,1,1,96,80,3,18,0,2.7,0,0,0,0.005),(2,'Couscous',0,1,1,1,1,1,83,93,3,19,0,0.7,0,0,0,0.004),(3,'Quinoa',0,1,1,1,1,1,73,70,2,13,0,1.3,1,0.1,0,0.004),(4,'Rice (brown)',0,0,1,0,1,1,103,115,3,24,0,1.5,1,0.2,0,0.005),(5,'Rice (white)',0,0,1,0,1,1,83,109,2,24,0,0.4,0,0.1,0,0.001);
+INSERT INTO `food_grain` VALUES (1,'Bulgur',0,1,1,1,1,1,96,80,3,18,0,2.7,0,0,0,0.005,46),(2,'Couscous',0,1,1,1,1,1,83,93,3,19,0,0.7,0,0,0,0.004,15),(3,'Quinoa',0,1,1,1,1,1,73,70,2,13,0,1.3,1,0.1,0,0.004,16),(4,'Rice (brown)',0,0,1,0,1,1,103,115,3,24,0,1.5,1,0.2,0,0.005,81),(5,'Rice (white)',0,0,1,0,1,1,83,109,2,24,0,0.4,0,0.1,0,0.001,88);
 /*!40000 ALTER TABLE `food_grain` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -651,6 +658,7 @@ CREATE TABLE `food_legume` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -661,7 +669,7 @@ CREATE TABLE `food_legume` (
 
 LOCK TABLES `food_legume` WRITE;
 /*!40000 ALTER TABLE `food_legume` DISABLE KEYS */;
-INSERT INTO `food_legume` VALUES (1,'Meatless chicken nuggets',1,1,1,1,1,0,72,168,15,6,0,3.1,9,0.8,0,0.288),(2,'Meatless ground beef',1,1,1,1,1,0,75,148,16,6,1,3.5,7,1.1,0,0.413),(3,'Tofu (firm)',1,1,1,1,1,1,150,189,21,3,1,0,11,1.3,0,0.026),(4,'Tofu (soft)',1,1,1,1,1,1,150,83,7,4,2,0.2,4,0.5,0,0.008),(5,'Vegetable patty',1,1,1,1,1,1,90,138,18,7,0,5.7,4,1,0,0.411),(6,'Meatless wiener',0,1,1,1,1,1,46,107,9,4,0,1.8,6,0.9,0,0.217),(7,'Beans',0,1,1,1,1,1,187,283,10,40,0,10.3,10,3.6,0,0.79),(8,'Refried beans ',0,1,1,1,1,1,186,175,10,29,0,9.9,2,0.9,0,0.557),(9,'Chickpeas',0,1,1,1,1,1,178,211,9,40,0,7.8,2,0.2,0,0.531),(10,'Falafel',1,1,1,1,1,1,17,57,2,5,0,1.3,3,0.4,0,0.05),(11,'Hummus',0,1,1,1,1,1,57,94,4,8,0,3.4,5,0.8,0,0.215),(12,'Lentils',0,0,1,1,1,1,146,170,13,29,3,6.2,1,0.1,0,0.349),(13,'Peas',0,1,1,1,1,1,145,171,12,31,4,4.2,1,0.1,0,0.003),(14,'Peanuts',0,1,1,1,1,1,37,217,9,8,2,3,18,2.6,0,0.002);
+INSERT INTO `food_legume` VALUES (1,'Meatless chicken nuggets',1,1,1,1,1,0,72,168,15,6,0,3.1,9,0.8,0,0.288,50),(2,'Meatless ground beef',1,1,1,1,1,0,75,148,16,6,1,3.5,7,1.1,0,0.413,52),(3,'Tofu (firm)',1,1,1,1,1,1,150,189,21,3,1,0,11,1.3,0,0.026,17),(4,'Tofu (soft)',1,1,1,1,1,1,150,83,7,4,2,0.2,4,0.5,0,0.008,77),(5,'Vegetable patty',1,1,1,1,1,1,90,138,18,7,0,5.7,4,1,0,0.411,98),(6,'Meatless wiener',0,1,1,1,1,1,46,107,9,4,0,1.8,6,0.9,0,0.217,27),(7,'Beans',0,1,1,1,1,1,187,283,10,40,0,10.3,10,3.6,0,0.79,0),(8,'Refried beans ',0,1,1,1,1,1,186,175,10,29,0,9.9,2,0.9,0,0.557,25),(9,'Chickpeas',0,1,1,1,1,1,178,211,9,40,0,7.8,2,0.2,0,0.531,82),(10,'Falafel',1,1,1,1,1,1,17,57,2,5,0,1.3,3,0.4,0,0.05,6),(11,'Hummus',0,1,1,1,1,1,57,94,4,8,0,3.4,5,0.8,0,0.215,12),(12,'Lentils',0,0,1,1,1,1,146,170,13,29,3,6.2,1,0.1,0,0.349,55),(13,'Peas',0,1,1,1,1,1,145,171,12,31,4,4.2,1,0.1,0,0.003,6),(14,'Peanuts',0,1,1,1,1,1,37,217,9,8,2,3,18,2.6,0,0.002,77);
 /*!40000 ALTER TABLE `food_legume` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -691,6 +699,7 @@ CREATE TABLE `food_meat` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -701,7 +710,7 @@ CREATE TABLE `food_meat` (
 
 LOCK TABLES `food_meat` WRITE;
 /*!40000 ALTER TABLE `food_meat` DISABLE KEYS */;
-INSERT INTO `food_meat` VALUES (1,'Beef blade roast',1,0,1,1,0,0,75,200,26,0,0,0,10,4,0.071,0.046),(2,'Beef cross rib roast',1,0,1,1,0,0,75,197,27,0,0,0,9,3.6,0.07,0.052),(3,'Beef flank steak',1,0,1,1,0,0,75,184,25,0,0,0,8,3.6,0.054,0.045),(4,'Beef rib eye steak',1,0,1,1,0,0,75,230,20,0,0,0,16,6.7,0.053,0.04),(5,'Beef rump roast',1,0,1,1,0,0,75,164,21,0,0,0,8,3.2,0.059,0.047),(6,'Beef T-Bone',1,0,1,1,0,0,75,216,22,0,0,0,13,5.6,0.054,0.051),(7,'Beef strip loin',1,0,1,1,0,0,75,191,23,0,0,0,10,4.3,0.055,0.043),(8,'Beef tenderloin',1,0,1,1,0,0,75,170,24,0,0,0,7,3.2,0.059,0.05),(9,'Veal cutlet',1,0,1,1,0,0,75,136,27,0,0,0,2,0.7,0.078,0.033),(10,'Veal stewing meal',1,0,1,1,0,0,75,141,26,0,0,0,3,1,0.109,0.07),(11,'Veal leg',1,0,1,1,0,0,75,120,21,0,0,0,3,1.4,0.077,0.051),(12,'Pork leg',1,0,1,0,0,0,75,189,22,0,0,0,11,3.9,0.072,0.047),(13,'Pork back ribs',1,0,1,0,0,0,75,274,21,0,0,0,20,7.9,0.085,0.1),(14,'Pork loin (pan-fried)',1,0,1,0,0,0,75,199,20,0,0,0,13,4.8,0.055,0.038),(15,'Pork spareribs',1,0,1,0,0,0,75,251,20,0,0,0,18,7,0.074,0.049),(16,'Pork tenderloin',1,0,1,0,0,0,75,108,21,0,0,0,2,0.8,0.052,0.044),(17,'Lamb leg',1,0,1,0,0,0,75,176,19,0,0,0,10,5.1,0.076,0.033),(18,'Lamb loin',1,0,1,0,0,0,75,222,18,0,0,0,16,7.9,0.085,0.038),(19,'Lamb rib',1,0,1,0,0,0,75,238,15,0,0,0,19,9.6,0.074,0.033),(20,'Beef liver',1,0,1,0,0,0,75,131,20,4,0,0,4,1.1,0.286,0.058),(21,'Chicken liver',1,0,1,0,0,0,75,129,19,1,0,0,5,1,0.423,0.069);
+INSERT INTO `food_meat` VALUES (1,'Beef blade roast',1,0,1,1,0,0,75,200,26,0,0,0,10,4,0.071,0.046,45),(2,'Beef cross rib roast',1,0,1,1,0,0,75,197,27,0,0,0,9,3.6,0.07,0.052,12),(3,'Beef flank steak',1,0,1,1,0,0,75,184,25,0,0,0,8,3.6,0.054,0.045,76),(4,'Beef rib eye steak',1,0,1,1,0,0,75,230,20,0,0,0,16,6.7,0.053,0.04,17),(5,'Beef rump roast',1,0,1,1,0,0,75,164,21,0,0,0,8,3.2,0.059,0.047,81),(6,'Beef T-Bone',1,0,1,1,0,0,75,216,22,0,0,0,13,5.6,0.054,0.051,13),(7,'Beef strip loin',1,0,1,1,0,0,75,191,23,0,0,0,10,4.3,0.055,0.043,85),(8,'Beef tenderloin',1,0,1,1,0,0,75,170,24,0,0,0,7,3.2,0.059,0.05,73),(9,'Veal cutlet',1,0,1,1,0,0,75,136,27,0,0,0,2,0.7,0.078,0.033,98),(10,'Veal stewing meal',1,0,1,1,0,0,75,141,26,0,0,0,3,1,0.109,0.07,46),(11,'Veal leg',1,0,1,1,0,0,75,120,21,0,0,0,3,1.4,0.077,0.051,99),(12,'Pork leg',1,0,1,0,0,0,75,189,22,0,0,0,11,3.9,0.072,0.047,50),(13,'Pork back ribs',1,0,1,0,0,0,75,274,21,0,0,0,20,7.9,0.085,0.1,26),(14,'Pork loin (pan-fried)',1,0,1,0,0,0,75,199,20,0,0,0,13,4.8,0.055,0.038,97),(15,'Pork spareribs',1,0,1,0,0,0,75,251,20,0,0,0,18,7,0.074,0.049,8),(16,'Pork tenderloin',1,0,1,0,0,0,75,108,21,0,0,0,2,0.8,0.052,0.044,70),(17,'Lamb leg',1,0,1,0,0,0,75,176,19,0,0,0,10,5.1,0.076,0.033,52),(18,'Lamb loin',1,0,1,0,0,0,75,222,18,0,0,0,16,7.9,0.085,0.038,66),(19,'Lamb rib',1,0,1,0,0,0,75,238,15,0,0,0,19,9.6,0.074,0.033,49),(20,'Beef liver',1,0,1,0,0,0,75,131,20,4,0,0,4,1.1,0.286,0.058,95),(21,'Chicken liver',1,0,1,0,0,0,75,129,19,1,0,0,5,1,0.423,0.069,37);
 /*!40000 ALTER TABLE `food_meat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -731,6 +740,7 @@ CREATE TABLE `food_nut` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -741,7 +751,7 @@ CREATE TABLE `food_nut` (
 
 LOCK TABLES `food_nut` WRITE;
 /*!40000 ALTER TABLE `food_nut` DISABLE KEYS */;
-INSERT INTO `food_nut` VALUES (1,'Almond',0,1,1,1,1,1,36,208,8,7,2,4.2,18,1.4,0,0),(2,'Cashew',0,1,1,1,1,1,35,199,5,11,2,1,16,3.2,0,0.222),(3,'Macadamia nut',0,1,1,1,1,1,34,243,3,4,1,2.7,26,4.1,0,0.09),(4,'Mixed nuts (roasted)',0,1,1,1,1,1,35,206,6,9,0,3.1,18,2.4,0,0.004),(5,'Pistachios',0,1,1,1,1,1,31,177,7,8,2,3.2,14,1.7,0,0.126),(6,'Walnuts',0,1,1,1,1,1,25,166,4,3,1,1.7,17,1.6,0,0.001);
+INSERT INTO `food_nut` VALUES (1,'Almond',0,1,1,1,1,1,36,208,8,7,2,4.2,18,1.4,0,0,80),(2,'Cashew',0,1,1,1,1,1,35,199,5,11,2,1,16,3.2,0,0.222,32),(3,'Macadamia nut',0,1,1,1,1,1,34,243,3,4,1,2.7,26,4.1,0,0.09,80),(4,'Mixed nuts (roasted)',0,1,1,1,1,1,35,206,6,9,0,3.1,18,2.4,0,0.004,36),(5,'Pistachios',0,1,1,1,1,1,31,177,7,8,2,3.2,14,1.7,0,0.126,24),(6,'Walnuts',0,1,1,1,1,1,25,166,4,3,1,1.7,17,1.6,0,0.001,99);
 /*!40000 ALTER TABLE `food_nut` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -771,6 +781,7 @@ CREATE TABLE `food_pasta` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -781,7 +792,7 @@ CREATE TABLE `food_pasta` (
 
 LOCK TABLES `food_pasta` WRITE;
 /*!40000 ALTER TABLE `food_pasta` DISABLE KEYS */;
-INSERT INTO `food_pasta` VALUES (1,'Macaroni',1,0,1,1,1,0,148,209,7,42,1,1.8,1,0.1,0,0.001),(2,'Noodles',1,0,1,1,1,0,11,60,1,7,0,0.4,4,0.5,0,0.05),(3,'Noodles (egg)',1,0,1,1,1,0,169,225,8,42,1,1.9,2,0.5,0.056,0.012),(4,'Noodles (rice)',1,0,1,1,1,0,186,203,2,46,0,1.9,0,0,0,0.035),(5,'Noodles (ramen)',1,0,1,1,1,0,85,371,9,54,1,2,13,6,0,1.76),(6,'Pasta',1,0,1,1,1,0,169,220,9,40,0,3.7,3,0.7,0.069,0.14),(7,'Spaguetti',1,0,1,1,1,0,148,209,7,42,1,2.5,1,0.1,0,0.001),(8,'Spaguetti (whole weat)',1,0,1,1,1,0,148,183,8,39,1,4.8,1,0.1,0,0.004);
+INSERT INTO `food_pasta` VALUES (1,'Macaroni',1,0,1,1,1,0,148,209,7,42,1,1.8,1,0.1,0,0.001,47),(2,'Noodles',1,0,1,1,1,0,11,60,1,7,0,0.4,4,0.5,0,0.05,33),(3,'Noodles (egg)',1,0,1,1,1,0,169,225,8,42,1,1.9,2,0.5,0.056,0.012,1),(4,'Noodles (rice)',1,0,1,1,1,0,186,203,2,46,0,1.9,0,0,0,0.035,40),(5,'Noodles (ramen)',1,0,1,1,1,0,85,371,9,54,1,2,13,6,0,1.76,81),(6,'Pasta',1,0,1,1,1,0,169,220,9,40,0,3.7,3,0.7,0.069,0.14,61),(7,'Spaguetti',1,0,1,1,1,0,148,209,7,42,1,2.5,1,0.1,0,0.001,57),(8,'Spaguetti (whole weat)',1,0,1,1,1,0,148,183,8,39,1,4.8,1,0.1,0,0.004,80);
 /*!40000 ALTER TABLE `food_pasta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -811,6 +822,7 @@ CREATE TABLE `food_poultry` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -821,7 +833,7 @@ CREATE TABLE `food_poultry` (
 
 LOCK TABLES `food_poultry` WRITE;
 /*!40000 ALTER TABLE `food_poultry` DISABLE KEYS */;
-INSERT INTO `food_poultry` VALUES (1,'Chicken breast',1,0,1,1,0,0,75,119,25,0,0,0,2,0.4,0.064,0.056),(2,'Chicken drumstick',1,0,1,1,0,0,75,127,19,0,0,0,5,1.4,0.07,0.071),(3,'Chicken flesh',1,0,1,1,0,0,75,143,22,0,0,0,6,1.5,0.067,0.065),(4,'Chicken wing',1,0,1,1,0,0,75,218,20,0,0,0,15,4.1,0.063,0.062),(5,'Chicken lean',1,0,1,1,0,0,75,153,16,0,0,0,9,0,0.059,0.051),(6,'Duck',1,0,1,1,0,0,75,253,14,0,0,0,21,7.3,0.063,0.044),(7,'Turkey dark meat',1,1,1,1,0,0,75,162,17,0,0,0,9,2,0.082,0.062),(8,'Turkey light meat',1,1,1,1,0,0,75,116,21,0,0,0,2,0.7,0.055,0.051);
+INSERT INTO `food_poultry` VALUES (1,'Chicken breast',1,0,1,1,0,0,75,119,25,0,0,0,2,0.4,0.064,0.056,53),(2,'Chicken drumstick',1,0,1,1,0,0,75,127,19,0,0,0,5,1.4,0.07,0.071,89),(3,'Chicken flesh',1,0,1,1,0,0,75,143,22,0,0,0,6,1.5,0.067,0.065,83),(4,'Chicken wing',1,0,1,1,0,0,75,218,20,0,0,0,15,4.1,0.063,0.062,1),(5,'Chicken lean',1,0,1,1,0,0,75,153,16,0,0,0,9,0,0.059,0.051,11),(6,'Duck',1,0,1,1,0,0,75,253,14,0,0,0,21,7.3,0.063,0.044,58),(7,'Turkey dark meat',1,1,1,1,0,0,75,162,17,0,0,0,9,2,0.082,0.062,83),(8,'Turkey light meat',1,1,1,1,0,0,75,116,21,0,0,0,2,0.7,0.055,0.051,82);
 /*!40000 ALTER TABLE `food_poultry` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -851,6 +863,7 @@ CREATE TABLE `food_seafood` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -861,7 +874,7 @@ CREATE TABLE `food_seafood` (
 
 LOCK TABLES `food_seafood` WRITE;
 /*!40000 ALTER TABLE `food_seafood` DISABLE KEYS */;
-INSERT INTO `food_seafood` VALUES (1,'Clams',1,0,1,1,0,0,85,125,22,4,0,0,2,0.2,0.078,0.095),(2,'Crab',1,0,1,1,0,0,71,71,15,0,0,0,1,0.2,0.063,0.238),(3,'Mussel',1,0,1,1,0,0,75,129,18,6,0,0,3,0.6,0.042,0.277),(4,'Oyster',1,0,1,1,0,0,131,90,9,5,0,0,3,0.8,0.072,0.147),(5,'Scallop',1,0,1,1,0,0,78,87,18,0,0,0,1,0.1,0.041,0.207),(6,'Shrimp',1,0,1,1,0,0,30,30,6,0,0,0,0,0.1,0.059,0.067);
+INSERT INTO `food_seafood` VALUES (1,'Clams',1,0,1,1,0,0,85,125,22,4,0,0,2,0.2,0.078,0.095,72),(2,'Crab',1,0,1,1,0,0,71,71,15,0,0,0,1,0.2,0.063,0.238,44),(3,'Mussel',1,0,1,1,0,0,75,129,18,6,0,0,3,0.6,0.042,0.277,53),(4,'Oyster',1,0,1,1,0,0,131,90,9,5,0,0,3,0.8,0.072,0.147,53),(5,'Scallop',1,0,1,1,0,0,78,87,18,0,0,0,1,0.1,0.041,0.207,76),(6,'Shrimp',1,0,1,1,0,0,30,30,6,0,0,0,0,0.1,0.059,0.067,9);
 /*!40000 ALTER TABLE `food_seafood` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -891,6 +904,7 @@ CREATE TABLE `food_vegetable` (
   `saturated_fat` float NOT NULL,
   `cholesterol` float NOT NULL,
   `sodium` float NOT NULL,
+  `glycemic_index` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -901,7 +915,7 @@ CREATE TABLE `food_vegetable` (
 
 LOCK TABLES `food_vegetable` WRITE;
 /*!40000 ALTER TABLE `food_vegetable` DISABLE KEYS */;
-INSERT INTO `food_vegetable` VALUES (1,'Alfalfa',0,1,1,1,1,1,8,2,0,0,0,0.2,0,0,0,0.001),(2,'Asparagus',0,0,1,1,1,1,90,18,2,3,1,1.6,0,0,0,0.008),(3,'Bean sprout',0,0,1,1,1,1,66,33,3,7,0,1.2,0,0,0,0.006),(4,'Beet',0,1,1,1,1,1,90,40,2,9,7,1.8,0,0,0,0.069),(5,'Brocoli',0,0,1,1,1,1,97,27,3,5,1,2.3,0,0,0,0.023),(6,'Brussels sprouts',0,0,1,1,1,1,84,33,3,6,2,3.2,0,0,0,0.015),(7,'Carrot',0,1,1,1,1,1,77,28,1,6,3,1.9,0,0,0,0.045),(8,'Cauliflower',0,0,1,1,1,1,66,15,1,3,1,1.8,0,0,0,0.01),(9,'Celery',0,1,1,1,1,1,40,6,0,1,1,0.6,0,0,0,0.032),(10,'Corn',0,0,1,1,1,1,87,82,3,19,3,2,1,0,0,0.008),(11,'Cucumber',0,0,1,1,1,1,28,3,0,1,0,0.2,0,0,0,0.001),(12,'Eggplant',0,0,1,1,1,1,52,18,0,5,2,1.3,0,0,0,0.001),(13,'Kale',0,0,1,1,1,1,69,19,1,4,1,1.4,0,0,0,0.016),(14,'Leek',0,0,1,1,1,1,55,17,0,4,0,0.5,0,0,0,0.005),(15,'Lettuce (looseleaf)',0,0,1,1,1,1,59,9,1,2,0,0.8,0,0,0,0.017),(16,'Mushroom',0,1,1,1,1,1,57,27,2,4,0,2.1,0,0,0,0.003),(17,'Onion',0,1,1,1,1,1,46,61,0,4,2,0.8,5,0,0,0.006),(18,'Green peas',0,1,1,1,1,1,85,66,4,12,4,3.7,0,0,0,0.061),(19,'Green pepper',0,0,1,1,1,1,82,16,1,4,2,1.2,0,0,0,0.002),(20,'Red pepper',0,0,1,1,1,1,60,15,1,4,2,0.8,0,0,0,0.001),(21,'Potato',0,0,1,1,1,1,150,129,3,30,1,2.5,0,0,0,0.007),(22,'Butternut squash',0,0,1,1,1,1,108,43,1,11,2,1.8,0,0,0,0.004),(23,'Tomato',0,1,1,1,1,1,123,22,1,5,3,1.5,0,0,0,0.006),(24,'Spinach',0,0,1,1,1,1,95,22,3,4,0,2.3,0,0,0,0.067),(25,'Zucchini',0,1,1,1,1,1,95,15,1,4,2,1.3,0,0,0,0.003),(26,'Avocado',0,1,1,1,1,1,101,161,2,9,1,6.7,15,0,0,0.007);
+INSERT INTO `food_vegetable` VALUES (1,'Alfalfa',0,1,1,1,1,1,8,2,0,0,0,0.2,0,0,0,0.001,22),(2,'Asparagus',0,0,1,1,1,1,90,18,2,3,1,1.6,0,0,0,0.008,31),(3,'Bean sprout',0,0,1,1,1,1,66,33,3,7,0,1.2,0,0,0,0.006,89),(4,'Beet',0,1,1,1,1,1,90,40,2,9,7,1.8,0,0,0,0.069,23),(5,'Brocoli',0,0,1,1,1,1,97,27,3,5,1,2.3,0,0,0,0.023,48),(6,'Brussels sprouts',0,0,1,1,1,1,84,33,3,6,2,3.2,0,0,0,0.015,70),(7,'Carrot',0,1,1,1,1,1,77,28,1,6,3,1.9,0,0,0,0.045,33),(8,'Cauliflower',0,0,1,1,1,1,66,15,1,3,1,1.8,0,0,0,0.01,25),(9,'Celery',0,1,1,1,1,1,40,6,0,1,1,0.6,0,0,0,0.032,45),(10,'Corn',0,0,1,1,1,1,87,82,3,19,3,2,1,0,0,0.008,9),(11,'Cucumber',0,0,1,1,1,1,28,3,0,1,0,0.2,0,0,0,0.001,96),(12,'Eggplant',0,0,1,1,1,1,52,18,0,5,2,1.3,0,0,0,0.001,10),(13,'Kale',0,0,1,1,1,1,69,19,1,4,1,1.4,0,0,0,0.016,44),(14,'Leek',0,0,1,1,1,1,55,17,0,4,0,0.5,0,0,0,0.005,90),(15,'Lettuce (looseleaf)',0,0,1,1,1,1,59,9,1,2,0,0.8,0,0,0,0.017,74),(16,'Mushroom',0,1,1,1,1,1,57,27,2,4,0,2.1,0,0,0,0.003,31),(17,'Onion',0,1,1,1,1,1,46,61,0,4,2,0.8,5,0,0,0.006,1),(18,'Green peas',0,1,1,1,1,1,85,66,4,12,4,3.7,0,0,0,0.061,67),(19,'Green pepper',0,0,1,1,1,1,82,16,1,4,2,1.2,0,0,0,0.002,70),(20,'Red pepper',0,0,1,1,1,1,60,15,1,4,2,0.8,0,0,0,0.001,9),(21,'Potato',0,0,1,1,1,1,150,129,3,30,1,2.5,0,0,0,0.007,13),(22,'Butternut squash',0,0,1,1,1,1,108,43,1,11,2,1.8,0,0,0,0.004,85),(23,'Tomato',0,1,1,1,1,1,123,22,1,5,3,1.5,0,0,0,0.006,11),(24,'Spinach',0,0,1,1,1,1,95,22,3,4,0,2.3,0,0,0,0.067,59),(25,'Zucchini',0,1,1,1,1,1,95,15,1,4,2,1.3,0,0,0,0.003,91),(26,'Avocado',0,1,1,1,1,1,101,161,2,9,1,6.7,15,0,0,0.007,31);
 /*!40000 ALTER TABLE `food_vegetable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -971,10 +985,11 @@ CREATE TABLE `user_feedback` (
 
 LOCK TABLES `user_feedback` WRITE;
 /*!40000 ALTER TABLE `user_feedback` DISABLE KEYS */;
-INSERT INTO `user_feedback` VALUES ('JustATest',0,3,2,0,4,3,1,4,3,1,5,4,4,5);
+INSERT INTO `user_feedback` VALUES ('JustATest',0,3,2,0,4,3,1,4,3,1,5,4,4,5),('TJ8xGJHFHMNoJIpgf',0,3,3,1,3,1,0,1,4,0,4,2,4,3);
 /*!40000 ALTER TABLE `user_feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
@@ -983,4 +998,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-02 23:32:47
+-- Dump completed on 2025-05-24 16:00:07

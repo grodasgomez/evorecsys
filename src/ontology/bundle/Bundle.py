@@ -56,7 +56,7 @@ class Bundle:
                            heritage_main_item.is_breakfast, heritage_main_item.is_lunch, heritage_main_item.is_dinner,
                            heritage_main_item.is_vegetarian, heritage_main_item.is_vegan, mixed_serving_size,
                            receiver_main_item.number_of_calories, mixed_protein, mixed_carbohydrate, mixed_sugar,
-                           mixed_fiber, mixed_fat, mixed_saturated_fat, mixed_sodium)
+                           mixed_fiber, mixed_fat, mixed_saturated_fat, mixed_sodium, heritage_main_item.glycemic_index)
 
         receiver_side_food_item_list = self.__get_side_food_list_data(receiver_meal)
         self.meal = Meal(mixed_main_item, receiver_side_food_item_list)
@@ -96,7 +96,8 @@ class Bundle:
                                    heritage_side_item.is_dinner, heritage_side_item.is_vegetarian,
                                    heritage_side_item.is_vegan, mixed_serving_size,
                                    receiver_side_item.number_of_calories, mixed_protein, mixed_carbohydrate,
-                                   mixed_sugar, mixed_fiber, mixed_fat, mixed_saturated_fat, mixed_sodium)
+                                   mixed_sugar, mixed_fiber, mixed_fat, mixed_saturated_fat, mixed_sodium,
+                                   heritage_side_item.glycemic_index)
                 list_of_mixed_side_items.append(mixed_side_item)
 
             else:
@@ -110,7 +111,8 @@ class Bundle:
                                        receiver_side_item.number_of_calories, receiver_side_item.protein,
                                        receiver_side_item.carbohydrate, receiver_side_item.sugar,
                                        receiver_side_item.fiber, receiver_side_item.fat,
-                                       receiver_side_item.saturated_fat, receiver_side_item.sodium)
+                                       receiver_side_item.saturated_fat, receiver_side_item.sodium,
+                                       receiver_side_item.glycemic_index)
                 list_of_mixed_side_items.append(not_mixed_side_item)
 
         receiver_main_item = self.__get_main_food_data(receiver_meal)
@@ -176,7 +178,8 @@ class Bundle:
                           meal.main_food_item.is_vegan, meal.main_food_item.serving_size,
                           meal.main_food_item.number_of_calories, meal.main_food_item.protein,
                           meal.main_food_item.carbohydrate, meal.main_food_item.sugar, meal.main_food_item.fiber,
-                          meal.main_food_item.fat, meal.main_food_item.saturated_fat, meal.main_food_item.sodium)
+                          meal.main_food_item.fat, meal.main_food_item.saturated_fat, meal.main_food_item.sodium,
+                          meal.main_food_item.glycemic_index)
 
         return main_item_data
 
@@ -190,7 +193,7 @@ class Bundle:
                               side_item.is_lunch, side_item.is_dinner, side_item.is_vegetarian, side_item.is_vegan,
                               side_item.serving_size, side_item.number_of_calories, side_item.protein,
                               side_item.carbohydrate, side_item.sugar, side_item.fiber, side_item.fat,
-                              side_item.saturated_fat, side_item.sodium)
+                              side_item.saturated_fat, side_item.sodium, side_item.glycemic_index)
             side_item_data_list.append(side_item_data)
 
         return side_item_data_list

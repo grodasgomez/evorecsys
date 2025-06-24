@@ -21,6 +21,7 @@ class Individual:
     SEMANTIC_RESTRICTION_INDEX = 1
     EXERCISING_RESTRICTION_INDEX = 2
     USER_PREFERENCES_RESTRICTION_INDEX = 3
+    LOAD_GLYCEMIC_RESTRICTION_INDEX = 4
 
     # Constructor
     def __init__(self, food=None, pas=None, ap=0.0):
@@ -71,18 +72,21 @@ class Individual:
 
         healthiness_aptitude = restrictions[self.FOOD_RESTRICTION_INDEX].evaluate(self.phenotype)
         self.aptitudes[self.FOOD_RESTRICTION_INDEX] = healthiness_aptitude
-        self.aptitudes[self.FOOD_RESTRICTION_INDEX] = healthiness_aptitude
+
         consistency_diversity_restriction = restrictions[self.SEMANTIC_RESTRICTION_INDEX].evaluate(self.phenotype)
         self.aptitudes[self.SEMANTIC_RESTRICTION_INDEX] = consistency_diversity_restriction
-        self.aptitudes[self.SEMANTIC_RESTRICTION_INDEX] = consistency_diversity_restriction
+
         exercising_aptitude = restrictions[self.EXERCISING_RESTRICTION_INDEX].evaluate(self.phenotype)
         self.aptitudes[self.EXERCISING_RESTRICTION_INDEX] = exercising_aptitude
-        self.aptitudes[self.EXERCISING_RESTRICTION_INDEX] = exercising_aptitude
+
         user_preferences_aptitude = restrictions[self.USER_PREFERENCES_RESTRICTION_INDEX].evaluate(self.phenotype)
         self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX] = user_preferences_aptitude
-        self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX] = user_preferences_aptitude
+
+        load_glycemic_aptitude = restrictions[self.LOAD_GLYCEMIC_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.LOAD_GLYCEMIC_RESTRICTION_INDEX] = load_glycemic_aptitude
+
         self.aptitude = (healthiness_aptitude + consistency_diversity_restriction + exercising_aptitude +
-                         user_preferences_aptitude) / len(restrictions)
+                         user_preferences_aptitude + load_glycemic_aptitude) / len(restrictions)
 
 
     # This method creates a single bundle. It calls other methods to build it.
@@ -117,7 +121,7 @@ class Individual:
                           reference_main.is_breakfast, reference_main.is_lunch, reference_main.is_dinner,
                           reference_main.is_vegetarian, reference_main.is_vegan, main_serving_size, main_calories,
                           main_protein, main_carbohydrate, main_sugar, main_fiber, main_fat, main_saturated_fat,
-                          main_sodium)
+                          main_sodium, reference_main.glycemic_index)
 
         remaining_food_items = self.ITEMS_PER_MEAL - 1
         remaining_calories = user_maximum_calories - main_calories
@@ -156,7 +160,7 @@ class Individual:
                                        vegetable_reference.is_vegetarian, vegetable_reference.is_vegan,
                                        vegetable_serving_size, calories_per_side_food_item[index], vegetable_protein,
                                        vegetable_carbohydrate, vegetable_sugar, vegetable_fiber, vegetable_fat,
-                                       vegetable_saturated_fat, vegetable_sodium)
+                                       vegetable_saturated_fat, vegetable_sodium, vegetable_reference.glycemic_index)
                 side_food_data_list.append(vegetable_side_data)
 
                 continue
@@ -181,7 +185,7 @@ class Individual:
                          side_reference.is_breakfast, side_reference.is_lunch, side_reference.is_dinner,
                          side_reference.is_vegetarian, side_reference.is_vegan, side_serving_size,
                          calories_per_side_food_item[index], side_protein, side_carbohydrate, side_sugar, side_fiber,
-                         side_fat, side_saturated_fat, side_sodium)
+                         side_fat, side_saturated_fat, side_sodium, side_reference.glycemic_index)
             side_food_data_list.append(side_data)
 
         meal = Meal(main_food_data, side_food_data_list)
@@ -291,12 +295,12 @@ class Individual:
         consistency_diversity_restriction = self.aptitudes[self.SEMANTIC_RESTRICTION_INDEX]
         exercising_aptitude = self.aptitudes[self.EXERCISING_RESTRICTION_INDEX]
         user_preferences_aptitude = self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX]
-
+        load_glycemic_aptitude = self.aptitudes[self.LOAD_GLYCEMIC_RESTRICTION_INDEX]
         print("Healthiness: ", healthiness_aptitude)
         print("Consistency and Diversity: ", consistency_diversity_restriction)
         print("Exercising: ", exercising_aptitude)
         print("User Preferences: ", user_preferences_aptitude)
-
+        print("Load Glycemic Index: ", load_glycemic_aptitude)
     def user_preferences_aptitude(self):
 
         return self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX]

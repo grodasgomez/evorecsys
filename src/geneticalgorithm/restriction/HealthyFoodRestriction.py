@@ -1,3 +1,5 @@
+from src.ontology.bundle.Bundle import Bundle
+
 # This class represents the restriction related to the healthiness of the food items.
 class HealthyFoodRestriction:
 
@@ -15,7 +17,7 @@ class HealthyFoodRestriction:
         self.sodium_reference_value = sodium
 
     # This method evaluates the phenotype of individuals in terms of healthiness of food items contained in a meal.
-    def evaluate(self, phenotype):
+    def evaluate(self, phenotype: list[Bundle]):
 
         protein_scores = []
         carbohydrate_scores = []
