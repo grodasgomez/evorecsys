@@ -3,6 +3,7 @@
 
 
 # All necessary libraries and imports from other files.
+from src.geneticalgorithm.GeneticAlgorithmMOEAD import GeneticAlgorithmMOEAD
 from src.collaborativefiltering.CollaborativeFiltering import CollaborativeFiltering
 from src.geneticalgorithm.GeneticAlgorithm import GeneticAlgorithm
 from src.database.FeedbackConnection import FeedbackConnection
@@ -525,7 +526,7 @@ class ProcessData(tornado.web.RequestHandler):
         # main parameters of it.
         print(json.dumps(user_data))
         print(json.dumps(similar_user_data))
-        ga = GeneticAlgorithm(user_data, similar_user_data)
+        ga = GeneticAlgorithmMOEAD(user_data, similar_user_data)
         best_individual = ga.execute_genetic_algorithm()
 
         suggested_bundles = best_individual.phenotype

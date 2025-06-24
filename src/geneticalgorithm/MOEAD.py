@@ -1,5 +1,5 @@
 import numpy as np
-from src.geneticalgorithm.Population import Population
+from src.geneticalgorithm.NDTree import NDTree
 from src.geneticalgorithm.Individual import Individual
 
 class MOEAD:
@@ -11,7 +11,7 @@ class MOEAD:
         self.neighborhoods = []
         self.reference_point = np.zeros(self.number_of_objectives)
         self.population = None
-        self.external_population = []  # External population to store non-dominated solutions
+        self.nd_tree = NDTree(maximum_size=20, minimum_children_size=6)  # ND-Tree for efficient dominance checks
         
     def _generate_combinations(self, m, H):
         """Generate all combinations of m non-negative integers that sum to H."""
@@ -95,19 +95,25 @@ class MOEAD:
                 return True
         return False
     
+    @property
+    def external_population(self):
+        return self.nd_tree.get_solutions()
+    
     def update_external_population(self, new_solution):
         """Update the external population with a new solution"""
-        # First check if the new solution is dominated by any existing solution
-        is_dominated = False
-        non_dominated_solutions = []
+        self.nd_tree.update(new_solution)
+
+
+        # is_dominated = False
+        # non_dominated_solutions = []
         
-        for sol in self.external_population:
-            if self.dominates(sol, new_solution):
-                is_dominated = True
-                break
-            if not self.dominates(new_solution, sol):
-                non_dominated_solutions.append(sol)
+        # for sol in self.external_population:
+        #     if self.dominates(sol, new_solution):
+        #         is_dominated = True
+        #         break
+        #     if not self.dominates(new_solution, sol):
+        #         non_dominated_solutions.append(sol)
         
-        # Only update if the new solution is not dominated
-        if not is_dominated:
-            self.external_population = non_dominated_solutions + [new_solution]
+        # # Only update if the new solution is not dominated
+        # if not is_dominated:
+        #     self.external_population = non_dominated_solutions + [new_solution]

@@ -13,6 +13,7 @@ from src.database.ItemsConnection import ItemsConnection
 import random
 import copy
 import time
+# from src.visualization.plot_4d_population import plot_4d_population, plot_4d_population_interactive
 
 
 # This class represents a Genetic Algorithm. It uses the information of the current user and the most similar user data
@@ -113,6 +114,9 @@ class GeneticAlgorithmMOEAD:
 
         algorithm_end_time = time.time()
         algorithm_execution_time = algorithm_end_time - algorithm_start_time
+        external_population = self.moead.external_population
+
+        
         print(f'Algorithm execution time: {algorithm_execution_time:.2f} seconds')
 
         end_time = time.time()
@@ -134,17 +138,17 @@ class GeneticAlgorithmMOEAD:
         print(f'Update external population avg time: {sum(update_external_population_times) / len(update_external_population_times) * 1000:.3f} milliseconds')
         print(f'Update external population total time: {sum(update_external_population_times):.2f} seconds')
 
-        print(f'External population size: {len(self.moead.external_population)}')
+        print(f'External population size: {len(external_population)}')
 
-        individual_with_lower_user_preferences_aptitude = min(self.moead.external_population, key=lambda x: x.user_preferences_aptitude())
+        individual_with_lower_user_preferences_aptitude = min(external_population, key=lambda x: x.user_preferences_aptitude())
         print(f'Individual with the lower aptitude in the User Preferences Restriction')
         print(f'Aptitude: {individual_with_lower_user_preferences_aptitude.aptitude}')
         print(f'Aptitudes: {individual_with_lower_user_preferences_aptitude.aptitudes}')
         print('I have finished; the recommendations are:')
-        
+                
     
         # Find the solution with the best average fitness
-        best_individual = min(self.moead.external_population, key=lambda x: x.aptitude)
+        best_individual = min(external_population, key=lambda x: x.aptitude)
         
             
         print("Best individual aptitudes:")
@@ -152,7 +156,11 @@ class GeneticAlgorithmMOEAD:
         print("Best individual aptitude: ", best_individual.aptitude)
         # self.__print_phenotype(best_individual.phenotype)
 
-        return best_individual.phenotype
+        # Create the visualizations
+        # plot_4d_population(external_population, title="External Population Visualization")
+        # plot_4d_population_interactive(external_population, title="External Population Interactive Visualization")
+
+        return best_individual
 
     def __create_offspring(self, parent1, parent2, population):
         # Create a new individual

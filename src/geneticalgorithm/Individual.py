@@ -295,3 +295,19 @@ class Individual:
     def user_preferences_aptitude(self):
 
         return self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX]
+    
+    def dominates(self, other_individual):
+        """Check if point1 dominates point2"""
+
+        # Check if point1 is better or equal in every objective
+        for i in range(len(self.aptitudes)):
+            isBetterOrEqual = self.aptitudes[i] <= other_individual.aptitudes[i]
+            if not isBetterOrEqual:
+                return False
+
+        #Check if point1 is better at least in one objective
+        for i in range(len(self.aptitudes)):
+            isBetter = self.aptitudes[i] < other_individual.aptitudes[i]
+            if isBetter:
+                return True
+        return False
