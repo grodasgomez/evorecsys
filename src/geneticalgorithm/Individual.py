@@ -1,4 +1,5 @@
 # All necessary libraries and imports from other files.
+import numpy as np
 from src.ontology.bundle.Bundle import Bundle
 from src.ontology.bundle.Meal import Meal
 from src.ontology.item.PA import PA
@@ -26,10 +27,11 @@ class Individual:
 
         self.food_items = food
         self.pa_items = pas
-        self.phenotype = []
+        self.phenotype: list[Bundle] = []
         self.aptitude = ap
         self.aptitudes = []
         self.index = -1
+        self.aptitudes = []
 
     # This method creates the list of bundles.
     def create_phenotype(self, vegetable_indexes, physical_data):
@@ -65,14 +67,19 @@ class Individual:
     # This method evaluates the phenotype using the restrictions.
     def evaluate_phenotype(self, restrictions):
 
-        self.aptitudes = [0.0, 0.0, 0.0, 0.0]
+        self.aptitudes = np.zeros(len(restrictions))
+
         healthiness_aptitude = restrictions[self.FOOD_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.FOOD_RESTRICTION_INDEX] = healthiness_aptitude
         self.aptitudes[self.FOOD_RESTRICTION_INDEX] = healthiness_aptitude
         consistency_diversity_restriction = restrictions[self.SEMANTIC_RESTRICTION_INDEX].evaluate(self.phenotype)
         self.aptitudes[self.SEMANTIC_RESTRICTION_INDEX] = consistency_diversity_restriction
+        self.aptitudes[self.SEMANTIC_RESTRICTION_INDEX] = consistency_diversity_restriction
         exercising_aptitude = restrictions[self.EXERCISING_RESTRICTION_INDEX].evaluate(self.phenotype)
         self.aptitudes[self.EXERCISING_RESTRICTION_INDEX] = exercising_aptitude
+        self.aptitudes[self.EXERCISING_RESTRICTION_INDEX] = exercising_aptitude
         user_preferences_aptitude = restrictions[self.USER_PREFERENCES_RESTRICTION_INDEX].evaluate(self.phenotype)
+        self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX] = user_preferences_aptitude
         self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX] = user_preferences_aptitude
         self.aptitude = (healthiness_aptitude + consistency_diversity_restriction + exercising_aptitude +
                          user_preferences_aptitude) / len(restrictions)
@@ -289,3 +296,23 @@ class Individual:
         print("Consistency and Diversity: ", consistency_diversity_restriction)
         print("Exercising: ", exercising_aptitude)
         print("User Preferences: ", user_preferences_aptitude)
+
+    def user_preferences_aptitude(self):
+
+        return self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX]
+    
+    def dominates(self, other_individual):
+        """Check if point1 dominates point2"""
+
+        # Check if point1 is better or equal in every objective
+        for i in range(len(self.aptitudes)):
+            isBetterOrEqual = self.aptitudes[i] <= other_individual.aptitudes[i]
+            if not isBetterOrEqual:
+                return False
+
+        #Check if point1 is better at least in one objective
+        for i in range(len(self.aptitudes)):
+            isBetter = self.aptitudes[i] < other_individual.aptitudes[i]
+            if isBetter:
+                return True
+        return False

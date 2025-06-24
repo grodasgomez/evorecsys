@@ -3,6 +3,7 @@
 
 
 # All necessary libraries and imports from other files.
+from src.geneticalgorithm.GeneticAlgorithmMOEAD import GeneticAlgorithmMOEAD
 from src.collaborativefiltering.CollaborativeFiltering import CollaborativeFiltering
 from src.geneticalgorithm.GeneticAlgorithm import GeneticAlgorithm
 from src.database.FeedbackConnection import FeedbackConnection
@@ -11,6 +12,7 @@ import tornado.escape
 import tornado.ioloop
 import tornado.web
 import os
+import json
 
 
 # This class loads the cover of EvoRecSys.
@@ -522,8 +524,12 @@ class ProcessData(tornado.web.RequestHandler):
 
         # This object creates an instance of a Genetic Algorithm and both user_data and most similar user data are the
         # main parameters of it.
-        ga = GeneticAlgorithm(user_data, similar_user_data)
-        suggested_bundles = ga.execute_genetic_algorithm()
+        print(json.dumps(user_data))
+        print(json.dumps(similar_user_data))
+        ga = GeneticAlgorithmMOEAD(user_data, similar_user_data)
+        best_individual = ga.execute_genetic_algorithm()
+
+        suggested_bundles = best_individual.phenotype
 
         me0main_ = suggested_bundles[0].meal.main_food_item.name
         me0main = me0main_.replace(" ", "_")
