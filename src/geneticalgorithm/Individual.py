@@ -304,12 +304,18 @@ class Individual:
 
         print("Meals:")
         for bundle in self.phenotype:
-            print(bundle.meal.main_food_item.name)
+            print(f"Main food item: {bundle.meal.main_food_item.name}")
             print(f"Meal glycemic load: {bundle.meal.glycemic_load}")
             print(f"Main food item glycemic load: {bundle.meal.main_food_item.glycemic_load}")
+            print(f"Main food item carbohydrate: {bundle.meal.main_food_item.carbohydrate}")
+            print(f"Main food item glycemic index: {bundle.meal.main_food_item.glycemic_index}")
+            print(f"Main food item serving size: {bundle.meal.main_food_item.serving_size}")
             for side_food_item in bundle.meal.side_food_items_list:
                 print(f"Side food item: {side_food_item.name}")
+                print(f"Side food item carbohydrate: {side_food_item.carbohydrate}")
                 print(f"Side food item glycemic load: {side_food_item.glycemic_load}")
+                print(f"Side food item glycemic index: {side_food_item.glycemic_index}")
+                print(f"Side food item serving size: {side_food_item.serving_size}")
             print(f"PA: {bundle.pa.name}")
             print("--------------------------------")
 

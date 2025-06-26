@@ -157,7 +157,9 @@ class PhysicalDataIII(tornado.web.RequestHandler):
     def post(self):
 
         level = str(self.get_body_argument("active", ""))
+        diabetes = str(self.get_body_argument("diabetes", ""))
         self.set_cookie("level", level, expires_days=1, httponly=True)
+        self.set_cookie("diabetes", diabetes, expires_days=1, httponly=True)
         self.redirect("/food-I")
 
         return
@@ -490,6 +492,7 @@ class ProcessData(tornado.web.RequestHandler):
                      float(self.get_cookie("walking")),
                      float(self.get_cookie("water")),
                      float(self.get_cookie("goal")),       #29
+                     float(self.get_cookie("diabetes")),   #30
                      ]
 
         # This object retrieves the most similar user data to the data of the current user by nearest-neighbour

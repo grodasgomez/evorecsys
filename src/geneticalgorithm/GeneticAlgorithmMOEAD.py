@@ -200,8 +200,10 @@ class GeneticAlgorithmMOEAD:
                                                user_data[23], user_data[24],user_data[25], user_data[26],
                                                user_data[27], user_data[28])
         high_evaluated_activities = self.pa_preferences.get_higher_evaluated_activities()
+
+        has_diabetes = user_data[30]
         self.__get_items()
-        self.__initialise_restrictions(high_evaluated_food_types, high_evaluated_activities)
+        self.__initialise_restrictions(high_evaluated_food_types, high_evaluated_activities, has_diabetes)
         self.__get_high_evaluated_preferences_of_similar_user(most_similar_user_data)
 
     # This method retrieves both food and physical activity data according to the preferences of the current user.
@@ -223,13 +225,15 @@ class GeneticAlgorithmMOEAD:
         random.shuffle(self.pa_items)
 
     # This method initalises the list of restrictions to evaluate individuals.
-    def __initialise_restrictions(self, high_evaluated_food_types, high_evaluated_activity_types):
+    def __initialise_restrictions(self, high_evaluated_food_types, high_evaluated_activity_types, has_diabetes):
 
         self.__build_healthy_food_restriction()
         self.__build_diversity_and_consistency_restriction()
         self.__build_pa_restriction(self.pa_preferences.minutes)
         self.__build_user_preferences_restriction(high_evaluated_food_types, high_evaluated_activity_types)
-        self.restrictions.append(LoadGlycemicRestriction())
+        if has_diabetes == 1:
+            print("The user has diabetes. Adding load glycemic restriction")
+            self.restrictions.append(LoadGlycemicRestriction())
 
     def __build_healthy_food_restriction(self):
 

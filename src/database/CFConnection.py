@@ -22,7 +22,7 @@ class CFConnection(Connection):
         cursor.execute("SELECT gender,age,height,weight,activity_level,bread_pref,cereal_pref,dairy_pref,egg_pref,"
                        "fish_pref,fruits_pref,grains_pref,legumes_pref,meat_pref,nuts_pref,pasta_pref,poultry_pref,"
                        "seafood_pref,vegetables_pref,days_pref,minutes_pref,balance_pref,bicycling_pref,"
-                       "conditioning_pref,dancing_pref,running_pref,sports_pref,walking_pref,water_pref,wellbeing "
+                       "conditioning_pref,dancing_pref,running_pref,sports_pref,walking_pref,water_pref,wellbeing,has_diabetes "
                        "FROM evo_rec_sys_v2.cf_users_normalised_data;")
 
         for user_data in cursor:
@@ -43,7 +43,7 @@ class CFConnection(Connection):
         cursor.execute("SELECT gender,age,height,weight, activity_level,bread_pref,cereal_pref,dairy_pref,egg_pref,"
                        "fish_pref,fruits_pref,grains_pref,legumes_pref,meat_pref,nuts_pref,pasta_pref,poultry_pref,"
                        "seafood_pref,vegetables_pref,days_pref,minutes_pref,balance_pref,bicycling_pref,"
-                       "conditioning_pref,dancing_pref,running_pref,sports_pref,walking_pref,water_pref,wellbeing "
+                       "conditioning_pref,dancing_pref,running_pref,sports_pref,walking_pref,water_pref,wellbeing,has_diabetes "
                        "FROM evo_rec_sys_v2.cf_users_raw_data WHERE user_id=" + "'" + str(user_id) + "';")
         user_data = cursor.fetchall()
 

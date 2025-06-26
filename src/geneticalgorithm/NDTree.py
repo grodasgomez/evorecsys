@@ -29,16 +29,16 @@ class NDNode:
     def update(self, new_solution: Individual):
         new_point = new_solution.aptitudes
 
-        if self.solutions == []:
-            return True
+        # if self._is_leaf() and self.solutions == []:
+        #     return True
 
         # If the new solution is dominated by the nadir point, so it is dominated
-        # by all solutions in the node.
+        # by all solutions in the node. Therefore it is descarted.
         if self._dominates(self.nadir_point, new_point):
             return False
         
         # If the new solution dominates the ideal point, so it dominates all
-        # solutions in the node. So the node must be removed.
+        # solutions in the node. Therefore the node must be removed.
         elif self._dominates(new_point, self.ideal_point):
             self.remove_self()
         
@@ -164,7 +164,9 @@ class NDNode:
         while len(remaining) > 0:
             z = remaining[0]
             # Find the child whose solution is closest to z
-            closest_child = min(children, key=lambda c: np.linalg.norm(np.array(z.aptitudes) - np.array(c.solutions[0].aptitudes)))
+            def get_distance_to_child(child):
+                return avg_euclidean_dist(z.aptitudes, child.solutions)
+            closest_child = min(children, key=get_distance_to_child)
             closest_child.solutions.append(z)
             closest_child.update_ideal_nadir_points(z.aptitudes)
             remaining.remove(z)
