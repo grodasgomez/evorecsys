@@ -11,7 +11,9 @@ class LoadGlycemicRestriction:
         for bundle in phenotype:
 
             meal = bundle.meal
-            load_glycemic_score = meal.load_glycemic / self.MAX_LOAD_GLYCEMIC_INDEX_PER_MEAL
+            assert meal.glycemic_load >= 0, "Glycemic load is not positive"
+
+            load_glycemic_score = meal.glycemic_load / self.MAX_LOAD_GLYCEMIC_INDEX_PER_MEAL
             load_glycemic_scores.append(load_glycemic_score)
 
         aptitude = sum(load_glycemic_scores) / len(load_glycemic_scores)

@@ -301,6 +301,18 @@ class Individual:
         print("Exercising: ", exercising_aptitude)
         print("User Preferences: ", user_preferences_aptitude)
         print("Load Glycemic Index: ", load_glycemic_aptitude)
+
+        print("Meals:")
+        for bundle in self.phenotype:
+            print(bundle.meal.main_food_item.name)
+            print(f"Meal glycemic load: {bundle.meal.glycemic_load}")
+            print(f"Main food item glycemic load: {bundle.meal.main_food_item.glycemic_load}")
+            for side_food_item in bundle.meal.side_food_items_list:
+                print(f"Side food item: {side_food_item.name}")
+                print(f"Side food item glycemic load: {side_food_item.glycemic_load}")
+            print(f"PA: {bundle.pa.name}")
+            print("--------------------------------")
+
     def user_preferences_aptitude(self):
 
         return self.aptitudes[self.USER_PREFERENCES_RESTRICTION_INDEX]

@@ -48,5 +48,8 @@ class Food(Item):
         print(f"Saturated fat: {self.saturated_fat}")
         print(f"Sodium: {self.sodium}")
 
-    def get_glycemic_load(self):
+    @property
+    def glycemic_load(self):
+        assert self.carbohydrate >= 0, "Carbohydrate is not positive"
+        assert self.glycemic_index >= 0, "Glycemic index is not positive"
         return self.glycemic_index * self.carbohydrate / 100
