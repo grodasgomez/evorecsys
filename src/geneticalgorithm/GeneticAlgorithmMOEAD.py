@@ -1,5 +1,4 @@
 # All necessary libraries and imports from other files.
-from src.geneticalgorithm.restriction.LoadGlycemicRestriction import LoadGlycemicRestriction
 from src.geneticalgorithm.Individual import Individual
 from src.geneticalgorithm.restriction.ConsistencyAndDiversityRestriction import ConsistencyAndDiversityRestriction
 from src.geneticalgorithm.restriction.UserPreferencesRestriction import UserPreferencesRestriction
@@ -227,15 +226,15 @@ class GeneticAlgorithmMOEAD:
     # This method initalises the list of restrictions to evaluate individuals.
     def __initialise_restrictions(self, high_evaluated_food_types, high_evaluated_activity_types, has_diabetes):
 
-        self.__build_healthy_food_restriction()
+        self.__build_healthy_food_restriction(has_diabetes)
         self.__build_diversity_and_consistency_restriction()
         self.__build_pa_restriction(self.pa_preferences.minutes)
         self.__build_user_preferences_restriction(high_evaluated_food_types, high_evaluated_activity_types)
-        if has_diabetes == 1:
-            print("The user has diabetes. Adding load glycemic restriction")
-            self.restrictions.append(LoadGlycemicRestriction())
 
-    def __build_healthy_food_restriction(self):
+    def __build_healthy_food_restriction(self, has_diabetes: int):
+
+        if has_diabetes == 1:
+            print("The user has diabetes. The load glycemic restriction will be applied to the healthy food objective")
 
         conn = ItemsConnection()
         restrictions = conn.retrieve_healthy_food_restrictions(self.physical_data.is_female, self.physical_data.age)
@@ -255,7 +254,7 @@ class GeneticAlgorithmMOEAD:
                 healthy_restriction = HealthyFoodRestriction(muscle_gain_protein, carbohydrate_size_per_meal,
                                                              sugar_size_per_meal, fibre_size_per_meal,
                                                              fat_size_per_meal, saturated_fat_size_per_meal,
-                                                             sodium_size_per_meal)
+                                                             sodium_size_per_meal, has_diabetes)
                 self.restrictions.append(healthy_restriction)
             else:
 
@@ -263,14 +262,14 @@ class GeneticAlgorithmMOEAD:
                 healthy_restriction = HealthyFoodRestriction(muscle_gain_protein, carbohydrate_size_per_meal,
                                                              sugar_size_per_meal, fibre_size_per_meal,
                                                              fat_size_per_meal, saturated_fat_size_per_meal,
-                                                             sodium_size_per_meal)
+                                                             sodium_size_per_meal, has_diabetes)
                 self.restrictions.append(healthy_restriction)
 
         else:
 
             healthy_restriction = HealthyFoodRestriction(protein_size_per_meal, carbohydrate_size_per_meal,
                                                          sugar_size_per_meal, fibre_size_per_meal, fat_size_per_meal,
-                                                         saturated_fat_size_per_meal, sodium_size_per_meal)
+                                                         saturated_fat_size_per_meal, sodium_size_per_meal, has_diabetes)
             self.restrictions.append(healthy_restriction)
 
     def __build_pa_restriction(self, spent_minutes):

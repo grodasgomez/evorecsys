@@ -4,9 +4,10 @@ from src.ontology.bundle.Bundle import Bundle
 class HealthyFoodRestriction:
 
     INTERPOLATION_REFERENCE_VALUE = 1.0
+    MAX_LOAD_GLYCEMIC_PER_MEAL = 80
 
     # Constructor
-    def __init__(self, protein, carbohydrate, sugar, fibre, fat, sat_fat, sodium):
+    def __init__(self, protein, carbohydrate, sugar, fibre, fat, sat_fat, sodium, has_diabetes):
 
         self.protein_reference_value = protein
         self.carbohydrate_reference_value = carbohydrate
@@ -15,6 +16,7 @@ class HealthyFoodRestriction:
         self.fat_limit_reference_value = fat
         self.saturated_fat_reference_value = sat_fat
         self.sodium_reference_value = sodium
+        self.has_diabetes = has_diabetes
 
     # This method evaluates the phenotype of individuals in terms of healthiness of food items contained in a meal.
     def evaluate(self, phenotype: list[Bundle]):
@@ -26,7 +28,7 @@ class HealthyFoodRestriction:
         fat_scores = []
         saturated_fat_scores = []
         sodium_scores = []
-
+        load_glycemic_scores = []
         for bundle in phenotype:
 
             meal = bundle.meal
@@ -46,15 +48,19 @@ class HealthyFoodRestriction:
             saturated_fat_scores.append(saturated_fat_score)
             sodium_score = self.__evaluate_less_than_nutrient_size(self.sodium_reference_value, meal.sodium)
             sodium_scores.append(sodium_score)
+            
+            if self.has_diabetes == 1:
+                load_glycemic_score = self.__evaluate_glycemic_load(meal.glycemic_load)
+                load_glycemic_scores.append(load_glycemic_score)
 
         aptitude = self.__ponderate_aptitude(protein_scores, carbohydrate_scores, sugar_scores, fibre_scores,
-                                             fat_scores, saturated_fat_scores, sodium_scores)
+                                             fat_scores, saturated_fat_scores, sodium_scores, load_glycemic_scores)
 
         return aptitude
 
     # This method calculates the final aptitude score of the individual.
     def __ponderate_aptitude(self, protein_scores, carbohydrate_scores, sugar_scores, fibre_scores, fat_scores,
-                             saturated_fat_scores, sodium_scores):
+                             saturated_fat_scores, sodium_scores, load_glycemic_scores):
 
         number_of_nutrients = 7
         number_of_bundles = len(protein_scores)
@@ -65,6 +71,7 @@ class HealthyFoodRestriction:
         fat_aptitude = 0.0
         saturated_fat_aptitude = 0.0
         sodium_aptitude = 0.0
+        load_glycemic_aptitude = 0.0
 
         for index in range(0, number_of_bundles):
 
@@ -75,11 +82,13 @@ class HealthyFoodRestriction:
             fat_aptitude += fat_scores[index]
             saturated_fat_aptitude += saturated_fat_scores[index]
             sodium_aptitude += sodium_scores[index]
+            if self.has_diabetes == 1:
+                load_glycemic_aptitude += load_glycemic_scores[index]
 
         summatory_of_aptitudes = (protein_aptitude / number_of_bundles) + (carbohydrate_aptitude / number_of_bundles) + \
                                  (sugar_aptitude / number_of_bundles) + (fibre_aptitude / number_of_bundles) + \
                                  (fat_aptitude / number_of_bundles) + (saturated_fat_aptitude / number_of_bundles) + \
-                                 (sodium_aptitude / number_of_bundles)
+                                 (sodium_aptitude / number_of_bundles) + (load_glycemic_aptitude / number_of_bundles)
         final_aptitude = summatory_of_aptitudes / number_of_nutrients
 
         return final_aptitude
@@ -124,4 +133,10 @@ class HealthyFoodRestriction:
             score = (nutrient_difference * self.INTERPOLATION_REFERENCE_VALUE) / nutrient_reference_value
 
             return score
+        
+    def __evaluate_glycemic_load(self, meal_glycemic_load):
+        
+        load_glycemic_score = min(meal_glycemic_load / self.MAX_LOAD_GLYCEMIC_PER_MEAL, 1)
+
+        return load_glycemic_score
 
