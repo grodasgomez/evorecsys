@@ -29,11 +29,14 @@ services:
     networks:
       - evorecsys-network
     environment:
+      - PYTHONUNBUFFERED=1
       - MYSQL_HOST=mysql
       - MYSQL_USER=misterious_guy
       - MYSQL_PASSWORD=hiddenLetters
       - MYSQL_DATABASE=evo_rec_sys_v2
-
+    volumes:
+      - .:/app
+    command: ["python", "Endpoint.py"]
 volumes:
   mysql_data:
 
