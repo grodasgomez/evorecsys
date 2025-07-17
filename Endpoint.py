@@ -530,59 +530,47 @@ class ProcessData(tornado.web.RequestHandler):
         print(json.dumps(user_data))
         print(json.dumps(similar_user_data))
         ga = GeneticAlgorithmMOEAD(user_data, similar_user_data)
-        best_individual = ga.execute_genetic_algorithm()
 
-        suggested_bundles = best_individual.phenotype
+        # [best_individual_average, best_individual_helthier, best_individual_preference, best_individual_diverse]
+        best_individuals = ga.execute_genetic_algorithm()
+        sufixes = ["average", "healthier", "preference", "diverse"]
 
-        me0main_ = suggested_bundles[0].meal.main_food_item.name
-        me0main = me0main_.replace(" ", "_")
-        me0side0_ = suggested_bundles[0].meal.side_food_items_list[0].name
-        me0side0 = me0side0_.replace(" ", "_")
-        me0side1_ = suggested_bundles[0].meal.side_food_items_list[1].name
-        me0side1 = me0side1_.replace(" ", "_")
-        me0side2_ = suggested_bundles[0].meal.side_food_items_list[2].name
-        me0side2 = me0side2_.replace(" ", "_")
-        pa0name_ = suggested_bundles[0].pa.name
-        pa0name = pa0name_.replace(" ", "_")
-        me1main_ = suggested_bundles[1].meal.main_food_item.name
-        me1main = me1main_.replace(" ", "_")
-        me1side0_ = suggested_bundles[1].meal.side_food_items_list[0].name
-        me1side0 = me1side0_.replace(" ", "_")
-        me1side1_ = suggested_bundles[1].meal.side_food_items_list[1].name
-        me1side1 = me1side1_.replace(" ", "_")
-        me1side2_ = suggested_bundles[1].meal.side_food_items_list[2].name
-        me1side2 = me1side2_.replace(" ", "_")
-        pa1name_ = suggested_bundles[1].pa.name
-        pa1name = pa1name_.replace(" ", "_")
-        me2main_ = suggested_bundles[2].meal.main_food_item.name
-        me2main = me2main_.replace(" ", "_")
-        me2side0_ = suggested_bundles[2].meal.side_food_items_list[0].name
-        me2side0 = me2side0_.replace(" ", "_")
-        me2side1_ = suggested_bundles[2].meal.side_food_items_list[1].name
-        me2side1 = me2side1_.replace(" ", "_")
-        me2side2_ = suggested_bundles[2].meal.side_food_items_list[2].name
-        me2side2 = me2side2_.replace(" ", "_")
-        pa2name_ = suggested_bundles[2].pa.name
-        pa2name = pa2name_.replace(" ", "_")
+        for i in range(len(best_individuals)):
+            suggested_bundles = best_individuals[i].phenotype
+            me0main = suggested_bundles[0].meal.main_food_item.name.replace(" ", "_")
+            me0side0 = suggested_bundles[0].meal.side_food_items_list[0].name.replace(" ", "_")
+            me0side1 = suggested_bundles[0].meal.side_food_items_list[1].name.replace(" ", "_")
+            me0side2 = suggested_bundles[0].meal.side_food_items_list[2].name.replace(" ", "_")
+            pa0name = suggested_bundles[0].pa.name.replace(" ", "_")
+            me1main = suggested_bundles[1].meal.main_food_item.name.replace(" ", "_")
+            me1side0 = suggested_bundles[1].meal.side_food_items_list[0].name.replace(" ", "_")
+            me1side1 = suggested_bundles[1].meal.side_food_items_list[1].name.replace(" ", "_")
+            me1side2 = suggested_bundles[1].meal.side_food_items_list[2].name.replace(" ", "_")
+            pa1name = suggested_bundles[1].pa.name.replace(" ", "_")
+            me2main = suggested_bundles[2].meal.main_food_item.name.replace(" ", "_")
+            me2side0 = suggested_bundles[2].meal.side_food_items_list[0].name.replace(" ", "_")
+            me2side1 = suggested_bundles[2].meal.side_food_items_list[1].name.replace(" ", "_")
+            me2side2 = suggested_bundles[2].meal.side_food_items_list[2].name.replace(" ", "_")
+            pa2name = suggested_bundles[2].pa.name.replace(" ", "_")
 
-        self.set_cookie('me0-main', me0main, expires_days=1, httponly=True)
-        self.set_cookie("me0-side0", me0side0, expires_days=1, httponly=True)
-        self.set_cookie("me0-side1", me0side1, expires_days=1, httponly=True)
-        self.set_cookie("me0-side2", me0side2, expires_days=1, httponly=True)
-        self.set_cookie("pa0-name", pa0name, expires_days=1, httponly=True)
-        self.set_cookie("pa0-duration", str(suggested_bundles[0].pa.duration), expires_days=1, httponly=True)
-        self.set_cookie("me1-main", me1main, expires_days=1, httponly=True)
-        self.set_cookie("me1-side0", me1side0, expires_days=1, httponly=True)
-        self.set_cookie("me1-side1", me1side1, expires_days=1, httponly=True)
-        self.set_cookie("me1-side2", me1side2, expires_days=1, httponly=True)
-        self.set_cookie("pa1-name", pa1name, expires_days=1, httponly=True)
-        self.set_cookie("pa1-duration", str(suggested_bundles[1].pa.duration), expires_days=1, httponly=True)
-        self.set_cookie("me2-main", me2main, expires_days=1, httponly=True)
-        self.set_cookie("me2-side0", me2side0, expires_days=1, httponly=True)
-        self.set_cookie("me2-side1", me2side1, expires_days=1, httponly=True)
-        self.set_cookie("me2-side2", me2side2, expires_days=1, httponly=True)
-        self.set_cookie("pa2-name", pa2name, expires_days=1, httponly=True)
-        self.set_cookie("pa2-duration", str(suggested_bundles[2].pa.duration), expires_days=1, httponly=True)
+            self.set_cookie(f'me0-main-{sufixes[i]}', me0main, expires_days=1, httponly=True)
+            self.set_cookie(f"me0-side0-{sufixes[i]}", me0side0, expires_days=1, httponly=True)
+            self.set_cookie(f"me0-side1-{sufixes[i]}", me0side1, expires_days=1, httponly=True)
+            self.set_cookie(f"me0-side2-{sufixes[i]}", me0side2, expires_days=1, httponly=True)
+            self.set_cookie(f"pa0-name-{sufixes[i]}", pa0name, expires_days=1, httponly=True)
+            self.set_cookie(f"pa0-duration-{sufixes[i]}", str(suggested_bundles[0].pa.duration), expires_days=1, httponly=True)
+            self.set_cookie(f"me1-main-{sufixes[i]}", me1main, expires_days=1, httponly=True)
+            self.set_cookie(f"me1-side0-{sufixes[i]}", me1side0, expires_days=1, httponly=True)
+            self.set_cookie(f"me1-side1-{sufixes[i]}", me1side1, expires_days=1, httponly=True)
+            self.set_cookie(f"me1-side2-{sufixes[i]}", me1side2, expires_days=1, httponly=True)
+            self.set_cookie(f"pa1-name-{sufixes[i]}", pa1name, expires_days=1, httponly=True)
+            self.set_cookie(f"pa1-duration-{sufixes[i]}", str(suggested_bundles[1].pa.duration), expires_days=1, httponly=True)
+            self.set_cookie(f"me2-main-{sufixes[i]}", me2main, expires_days=1, httponly=True)
+            self.set_cookie(f"me2-side0-{sufixes[i]}", me2side0, expires_days=1, httponly=True)
+            self.set_cookie(f"me2-side1-{sufixes[i]}", me2side1, expires_days=1, httponly=True)
+            self.set_cookie(f"me2-side2-{sufixes[i]}", me2side2, expires_days=1, httponly=True)
+            self.set_cookie(f"pa2-name-{sufixes[i]}", pa2name, expires_days=1, httponly=True)
+            self.set_cookie(f"pa2-duration-{sufixes[i]}", str(suggested_bundles[2].pa.duration), expires_days=1, httponly=True)
         self.redirect("/recommendations")
 
         return
@@ -600,59 +588,45 @@ class Recommendations(tornado.web.RequestHandler):
 
     def get(self):
 
-        me0main_ = str(self.get_cookie("me0-main"))
-        me0main = me0main_.replace("_", " ")
-        me0side0_ = str(self.get_cookie("me0-side0"))
-        me0side0 = me0side0_.replace("_", " ")
-        me0side1_ = str(self.get_cookie("me0-side1"))
-        me0side1 = me0side1_.replace("_", " ")
-        me0side2_ = str(self.get_cookie("me0-side2"))
-        me0side2 = me0side2_.replace("_", " ")
-        pa0name_ = str(self.get_cookie("pa0-name"))
-        pa0name = pa0name_.replace("_", " ")
-        me1main_ = str(self.get_cookie("me1-main"))
-        me1main = me1main_.replace("_", " ")
-        me1side0_ = str(self.get_cookie("me1-side0"))
-        me1side0 = me1side0_.replace("_", " ")
-        me1side1_ = str(self.get_cookie("me1-side1"))
-        me1side1 = me1side1_.replace("_", " ")
-        me1side2_ = str(self.get_cookie("me1-side2"))
-        me1side2 = me1side2_.replace("_", " ")
-        pa1name_ = str(self.get_cookie("pa1-name"))
-        pa1name = pa1name_.replace("_", " ")
-        me2main_ = str(self.get_cookie("me2-main"))
-        me2main = me2main_.replace("_", " ")
-        me2side0_ = str(self.get_cookie("me2-side0"))
-        me2side0 = me2side0_.replace("_", " ")
-        me2side1_ = str(self.get_cookie("me2-side1"))
-        me2side1 = me2side1_.replace("_", " ")
-        me2side2_ = str(self.get_cookie("me2-side2"))
-        me2side2 = me2side2_.replace("_", " ")
-        pa2name_ = str(self.get_cookie("pa2-name"))
-        pa2name = pa2name_.replace("_", " ")
+        # Get filter from query parameter, default to 'average'
+        filter_value = self.get_argument("filter", "average")
+
+        # Helper to get cookie with suffix
+        def get_cookie_with_suffix(base, suffix):
+            value = self.get_cookie(f"{base}-{suffix}")
+            if value is None:
+                return ""
+            return value
 
         items = [
-            [me0main,
-             me0side0,
-             me0side1,
-             me0side2,
-             pa0name,
-             str(self.get_cookie("pa0-duration"))],
-            [me1main,
-             me1side0,
-             me1side1,
-             me1side2,
-             pa1name,
-             str(self.get_cookie("pa1-duration"))],
-            [me2main,
-             me2side0,
-             me2side1,
-             me2side2,
-             pa2name,
-             str(self.get_cookie("pa2-duration"))]
+            [
+                get_cookie_with_suffix("me0-main", filter_value),
+                get_cookie_with_suffix("me0-side0", filter_value),
+                get_cookie_with_suffix("me0-side1", filter_value),
+                get_cookie_with_suffix("me0-side2", filter_value),
+                get_cookie_with_suffix("pa0-name", filter_value),
+                get_cookie_with_suffix("pa0-duration", filter_value),
+            ],
+            [
+                get_cookie_with_suffix("me1-main", filter_value),
+                get_cookie_with_suffix("me1-side0", filter_value),
+                get_cookie_with_suffix("me1-side1", filter_value),
+                get_cookie_with_suffix("me1-side2", filter_value),
+                get_cookie_with_suffix("pa1-name", filter_value),
+                get_cookie_with_suffix("pa1-duration", filter_value),
+            ],
+            [
+                get_cookie_with_suffix("me2-main", filter_value),
+                get_cookie_with_suffix("me2-side0", filter_value),
+                get_cookie_with_suffix("me2-side1", filter_value),
+                get_cookie_with_suffix("me2-side2", filter_value),
+                get_cookie_with_suffix("pa2-name", filter_value),
+                get_cookie_with_suffix("pa2-duration", filter_value),
+            ]
         ]
 
-        self.render("templates/pages/recommendations.html", items=items)
+
+        self.render("templates/pages/recommendations.html", items=items, filter=filter_value)
 
         return
 
