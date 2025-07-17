@@ -147,20 +147,35 @@ class GeneticAlgorithmMOEAD:
         print('I have finished; the recommendations are:')
                 
     
-        # Find the solution with the best average fitness
-        best_individual = min(external_population, key=lambda x: x.aptitude)
+        # Getting best individual for each aptitude
+        best_individual_average = min(
+            external_population,
+            key=lambda x: x.aptitude
+        )
+        best_individual_healthier = min(
+            external_population,
+            key=lambda x: x.aptitudes[Individual.FOOD_RESTRICTION_INDEX]
+        )
+        best_individual_preference = min(
+            external_population,
+            key=lambda x: x.aptitudes[Individual.USER_PREFERENCES_RESTRICTION_INDEX]
+        )
+        best_individual_diverse = min(
+            external_population,
+            key=lambda x: x.aptitudes[Individual.SEMANTIC_RESTRICTION_INDEX]
+        )
         
             
         print("Best individual aptitudes:")
-        best_individual.print_aptitude()
-        print("Best individual aptitude: ", best_individual.aptitude)
+        best_individual_average.print_aptitude()
+        print("Best individual aptitude: ", best_individual_average.aptitude)
         # self.__print_phenotype(best_individual.phenotype)
 
         # Create the visualizations
         # plot_4d_population(external_population, title="External Population Visualization")
         # plot_4d_population_interactive(external_population, title="External Population Interactive Visualization")
 
-        return best_individual
+        return [best_individual_average, best_individual_healthier, best_individual_preference, best_individual_diverse]
 
     def __create_offspring(self, parent1, parent2, population):
         # Create a new individual
